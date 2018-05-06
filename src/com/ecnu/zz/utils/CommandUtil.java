@@ -18,6 +18,8 @@ public class CommandUtil {
     public static final String COMMAND_DOWNLOAD = "download";
     public static final String COMMAND_DELETE = "delete";
 
+    public static final String REMOTE_TARGET_DIR = "/home/lab1/files/";
+
     public static int parseStrCommand(String strCommand){
 
         if(strCommand == null || strCommand.length() == 0) //空指令，直接返回
@@ -31,10 +33,12 @@ public class CommandUtil {
                 case COMMAND_UPLOAD:
                     int fileCheckResult = FileUtil.checkValidFilePath(split[1]);
                     if(fileCheckResult == FileUtil.IS_FILE){ //检查文件路径是否存在,并且可读,确保文件存在
+                        System.out.println("CommandUtil.parseStrCommand: send one file");
                         RdmaUtil.uploadFile(split[1]);
                         return COMMAND_OK;
                     }else if(fileCheckResult == FileUtil.IS_DIR){ //检查文件路径是否存在,并且可读,确保目录存在
-                        RdmaUtil.tmpFileUpdate(split[1]); //使用RDMA传输,需要读取/tmp目录下临时文件,所以每次先更新临时文件
+                        System.out.println("CommandUtil.parseStrCommand: send one directory");
+                        RdmaUtil.tmpFileUpdate(split[1], REMOTE_TARGET_DIR); //使用RDMA传输,需要读取/tmp目录下临时文件,所以每次先更新临时文件
                         RdmaUtil.uploadDir(split[1]);
                     }else
                         return COMMAND_ILLEGAL; //非法指令,指令参数有误,找不到文件

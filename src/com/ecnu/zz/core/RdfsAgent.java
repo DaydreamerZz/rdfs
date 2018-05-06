@@ -8,8 +8,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
@@ -19,11 +17,11 @@ import io.netty.handler.logging.LoggingHandler;
  * @date   : 2018/3/26 12:20
  * @desc   : 使用JBoss Marshalling的netty server
  */
-public class RdfsServer {
+public class RdfsAgent {
 
     public static void main(String[] args) throws Exception {
         int port = 8080;
-        new RdfsServer().bind(8080);
+        new RdfsAgent().bind(8080);
     }
 
     public void bind(int port) throws Exception{

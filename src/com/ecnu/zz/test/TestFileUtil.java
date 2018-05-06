@@ -22,9 +22,13 @@ public class TestFileUtil {
         ArrayList<String> remoteDirs = new ArrayList<>();
         ArrayList<String> remoteFiles = new ArrayList<>();
 
-        fileUtil.traverseFolder("/home/lab2/files/", localDirs, localFiles, remoteDirs, remoteFiles);
+        fileUtil.traverseFolder("/home/lab2/files/", "/home/lab1/", localDirs, localFiles, remoteDirs, remoteFiles);
+//        fileUtil.traverseFolder("/home/lab2/files/1", "/home/lab1/", localDirs, localFiles, remoteDirs, remoteFiles);
         System.out.println(localDirs);
         System.out.println(localFiles);
+
+        System.out.println(remoteDirs);
+        System.out.println(remoteFiles);
 
         return;
     }

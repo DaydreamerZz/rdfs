@@ -61,8 +61,17 @@ public class RdfsClient {
              */
             while(true){
                 command = in.readLine();
-                if(CommandUtil.parseStrCommand(command) == CommandUtil.COMMAND_OK) {
+                int result = CommandUtil.parseStrCommand(command);
+                if(result == CommandUtil.COMMAND_OK) {
                     channel.writeAndFlush(command + "\n");
+                }else if(result == CommandUtil.COMMAND_NULL){
+                    System.out.println("Command can not be empty");
+                }else if(result == CommandUtil.COMMAND_UNSUPPORTED){
+                    System.out.println("Command: " + command + " not supported");
+                }else if(result == CommandUtil.COMMAND_UNKNOWN){
+                    System.out.println("Command: " + command + " unknown");
+                }else if(result == CommandUtil.COMMAND_ILLEGAL){
+                    System.out.println("Command: " + command + " illegal");
                 }
 
             }
