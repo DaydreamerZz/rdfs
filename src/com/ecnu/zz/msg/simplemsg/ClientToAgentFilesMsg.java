@@ -1,6 +1,7 @@
 package com.ecnu.zz.msg.simplemsg;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,32 +10,45 @@ import java.util.List;
  * @date : 18-5-6 下午8:58
  * @desc :
  */
+
+/*
+有三个变量:
+commandStr : 客户端执行的指令,比如upload file, list , list 191.168.0.100/tmp
+remoteRdmaAddress和filePaths都作用在upload命令上, 第一个是记录client文件存放在哪个server上, 第二个是所有传输的文件名. 所有文件在Agent上将被记录在
+ */
 public class ClientToAgentFilesMsg implements Serializable{
     private static final long serialVersionUID = 1L;
+    private String commandStr;
     private String remoteRdmaAddress;
-    private List<String> fileNames;
+    private ArrayList<String> filePaths;
 
     public String getRemoteRdmaAddress() {
         return remoteRdmaAddress;
     }
-
     public void setRemoteRdmaAddress(String remoteRdmaAddress) {
         this.remoteRdmaAddress = remoteRdmaAddress;
     }
 
-    public List<String> getFileNames() {
-        return fileNames;
+    public ArrayList<String> getFilePaths() {
+        return filePaths;
+    }
+    public void setFileNames(ArrayList<String> filePaths) {
+        this.filePaths = filePaths;
     }
 
-    public void setFileNames(List<String> fileNames) {
-        this.fileNames = fileNames;
+    public String getCommandStr() {
+        return commandStr;
+    }
+    public void setCommandStr(String commandStr) {
+        this.commandStr = commandStr;
     }
 
     @Override
     public String toString() {
         return "ClientToAgentFilesMsg{" +
-                "remoteRdmaAddress='" + remoteRdmaAddress + '\'' +
-                ", fileNames=" + fileNames +
+                "commandStr='" + commandStr + '\'' +
+                ", remoteRdmaAddress='" + remoteRdmaAddress + '\'' +
+                ", filePaths=" + filePaths +
                 '}';
     }
 }

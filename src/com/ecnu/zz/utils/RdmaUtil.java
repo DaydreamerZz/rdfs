@@ -16,9 +16,9 @@ public class RdmaUtil {
 
 
     //这个列表用来记录每次发送的文件路径信息,用来在传输完成之后,RdfsClient将其中内容发送给RdmaAgent,所以这个列表每次都会重新初始化
-    public static ArrayList<String> fileNames = new ArrayList<>();
-    public static ArrayList<String> getFileNames() {
-        return fileNames;
+    public static ArrayList<String> filePaths = new ArrayList<>();
+    public static ArrayList<String> getFilePaths() {
+        return filePaths;
     }
 
 
@@ -28,7 +28,7 @@ public class RdmaUtil {
     /*
     @param filePath 传输单个文件, 文件本地文件路径
      */
-    public static void uploadFile(String filePath, String remoteTargetDir) {
+    /*public static void uploadFile(String filePath, String remoteTargetDir) {
         System.out.println("Rdma.uploadFile: " + filePath);
         //start 为了把发送文件信息记录在fileNames列表中,这里多出来的处理步骤.在发送目录中不需要,因为已经处理好了
             if(!remoteTargetDir.endsWith("/"))
@@ -36,7 +36,7 @@ public class RdmaUtil {
         String substring = filePath.substring(filePath.lastIndexOf("/") + 1);
 
 //        fileNames = new ArrayList<>();
-        fileNames.add(remoteTargetDir + substring);
+        filePaths.add(remoteTargetDir + substring);
 //        System.out.println("ok: " + fileNames.get(0));
         //end
 
@@ -55,7 +55,7 @@ public class RdmaUtil {
                 br.read(rdmaResult);
                 System.out.println(rdmaResult);
             }else{
-                System.out.println("DEBUG: do not use rdma send files");
+                System.out.println("RdmaUtil.uploadFile DEBUG: do not use rdma send files");
             }
 
         } catch (IOException e) {
@@ -63,7 +63,7 @@ public class RdmaUtil {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
 
 
@@ -109,13 +109,13 @@ public class RdmaUtil {
                 for(i = 0; i < len; i++){ //先把目录信息写入临时文件
                     bwRemote.write(remoteDirs.get(i) + "\n");
                     bwLocal.write(localDirs.get(i) + "\n");
-                    fileNames.add(remoteDirs.get(i));
+                    filePaths.add(remoteDirs.get(i));
                 }
                 len = localFiles.size();
                 for(i = 0; i < len; i++){ //文件写入临时文件
                     bwRemote.write(remoteFiles.get(i) + "\n");
                     bwLocal.write(localFiles.get(i) + "\n");
-                    fileNames.add(remoteFiles.get(i));
+                    filePaths.add(remoteFiles.get(i));
                 }
                 bwLocal.flush();
                 bwRemote.flush();
@@ -153,7 +153,7 @@ public class RdmaUtil {
                 br.read(rdmaResult);
                 System.out.println(rdmaResult);
             }else {
-                System.out.println("DEBUG: do not use rdma send files");
+                System.out.println("RdmaUtil.uploadDir DEBUG: do not use rdma send files");
             }
         } catch (IOException e) {
             e.printStackTrace();

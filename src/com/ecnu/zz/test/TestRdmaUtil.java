@@ -1,5 +1,6 @@
 package com.ecnu.zz.test;
 
+import com.ecnu.zz.core.RdfsClient;
 import com.ecnu.zz.utils.RdmaUtil;
 
 /**
@@ -11,10 +12,11 @@ import com.ecnu.zz.utils.RdmaUtil;
 public class TestRdmaUtil {
 
     public static void main(String[] args) {
-//        RdmaUtil.tmpFileUpdate("/home/lab2/files/", "/tmp/files/");
-        //RdmaUtil.uploadDir("/home/lab2/files/");
+        RdmaUtil.tmpFileUpdate("/home/lab2/files/", RdfsClient.getRemoteRdmaDirectory());
 
-        RdmaUtil.uploadFile("/home/lab2/files/1", "/tmp/files");
+        RdmaUtil.uploadDir("/home/lab2/files/");
+
+        //RdmaUtil.uploadFile("/home/lab2/files/1", "/tmp/files");
         return;
     }
 }

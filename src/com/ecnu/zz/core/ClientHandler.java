@@ -20,9 +20,13 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ResponseMsg responseMsg = (ResponseMsg) msg;
-        RdfsClient.setRemoteRdmaAddress(((ResponseMsg) msg).getAvailStorages().get(0));
-        System.out.println("Receive server response: " + responseMsg);
-        System.out.println("Chosen remote RDMA server address: " + RdfsClient.getRemoteRdmaAddress() );
+        if(responseMsg.getListResults() == null){ //不是list指令查询结果
+            RdfsClient.setRemoteRdmaAddress(((ResponseMsg) msg).getAvailStorages().get(0));
+            System.out.println("Receive server response: " + responseMsg);
+            System.out.println("Chosen remote RDMA server address: " + RdfsClient.getRemoteRdmaAddress());
+        }else {
+            System.out.println("Receive server response: " + responseMsg.getListResults());
+        }
     }
 
     @Override

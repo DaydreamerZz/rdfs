@@ -12,7 +12,6 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * @author : Bruce Zhao
@@ -23,7 +22,11 @@ import java.util.Collections;
 public class RdfsClient {
 
     public static String remoteRdmaAddress = null;
-    public static boolean DEBUG_RDMA_RUN = false;
+    public static String remoteRdmaDirectory = "/mnt/nvm/";
+
+    //DEBUG选项,false不使用rdma上传,true使用上传
+//    public static boolean DEBUG_RDMA_RUN = false;
+    public static boolean DEBUG_RDMA_RUN = true;
 
     public static String getRemoteRdmaAddress() {
         return remoteRdmaAddress;
@@ -32,14 +35,21 @@ public class RdfsClient {
         RdfsClient.remoteRdmaAddress = remoteRdmaAddress;
     }
 
+    public static String getRemoteRdmaDirectory() {
+        return remoteRdmaDirectory;
+    }
+    public static void setRemoteRdmaDirectory(String remoteRdmaDirectory) {
+        RdfsClient.remoteRdmaDirectory = remoteRdmaDirectory;
+    }
+
     public static boolean isDebugRdmaRun() {
         return DEBUG_RDMA_RUN;
     }
 
     public static void main(String[] args){
         try {
-//            new RdfsClient().connect("127.0.0.1", 8080);
-            new RdfsClient().connect("219.228.135.43", 8080);
+            new RdfsClient().connect("127.0.0.1", 8080);
+//            new RdfsClient().connect("219.228.135.43", 8080);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -76,29 +86,36 @@ public class RdfsClient {
             2. 指令发送给server
 
              */
+            ClientToAgentFilesMsg msg;
             while(true){
                 command = in.readLine();
                 int result = CommandUtil.parseStrCommand(command);
-                if(result == CommandUtil.COMMAND_OK) {
+                if(result == CommandUtil.COMMAND_UPLOAD_OK) { //到这里,文件已经被传输到远程了
 //                    channel.writeAndFlush(command + "\n");
-                    ArrayList<String> fileNames = RdmaUtil.getFileNames();
+                    ArrayList<String> fileNames = RdmaUtil.getFilePaths();
                     /*for(String fileName : fileNames){
 //                        System.out.println("RdfsClient.connect " + fileName);
                         channel.write(fileName);
                     }
                     channel.flush();*/
-                    ClientToAgentFilesMsg msg = new ClientToAgentFilesMsg();
-
+                    msg = new ClientToAgentFilesMsg();
                     //这里只能新建立一个ArrayList对象,否则数据还没发送到Agent,fileNames.clear()方法会把数据清空,Agent收到的数据就是空的
                     ArrayList<String> sendFileNames = new ArrayList<>();
                     for(String tmp : fileNames){
                         sendFileNames.add(tmp);
                     }
-                    Collections.copy(sendFileNames, fileNames);
+//                    Collections.copy(sendFileNames, fileNames);
+                    msg.setCommandStr(command);
                     msg.setFileNames(sendFileNames);
-                    msg.setRemoteRdmaAddress(remoteRdmaAddress);
+                    msg.setRemoteRdmaAddress(RdfsClient.getRemoteRdmaAddress());
+                    System.out.println("RdfsClient in while before send: " + msg);
+
                     channel.writeAndFlush(msg);
                     fileNames.clear();
+                }else if(result == CommandUtil.COMMAND_LIST_OK){
+                    msg = new ClientToAgentFilesMsg();
+                    msg.setCommandStr(command);
+                    channel.writeAndFlush(msg);
                 }else if(result == CommandUtil.COMMAND_NULL){
                     System.out.println("Command can not be empty");
                 }else if(result == CommandUtil.COMMAND_UNSUPPORTED){

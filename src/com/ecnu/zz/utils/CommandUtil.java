@@ -1,5 +1,7 @@
 package com.ecnu.zz.utils;
 
+import com.ecnu.zz.core.RdfsClient;
+
 /**
  * @author : Bruce Zhao
  * @email : zhzh402@163.com
@@ -13,13 +15,16 @@ public class CommandUtil {
     public static final int COMMAND_OK = 2;
     public static final int COMMAND_UNSUPPORTED = 3;
     public static final int COMMAND_UNKNOWN = 4;
+    public static final int COMMAND_UPLOAD_OK = 5;
+    public static final int COMMAND_LIST_OK = 6;
+
 
     public static final String COMMAND_UPLOAD = "upload";
     public static final String COMMAND_DOWNLOAD = "download";
     public static final String COMMAND_DELETE = "delete";
     public static final String COMMAND_LIST = "list";
 
-    public static final String REMOTE_TARGET_DIR = "/tmp/files/";
+//    public static final String REMOTE_TARGET_DIR = "/mnt/nvm/";
 
     public static int parseStrCommand(String strCommand){
 
@@ -27,23 +32,27 @@ public class CommandUtil {
             return COMMAND_NULL;
 
         String[] split = strCommand.split(" ");
-        if(split.length < 2){ //非法指令,指令的参数个数不对
-            return COMMAND_ILLEGAL;
-        }else{
+        if(split[0].toLowerCase().equals(COMMAND_LIST) && split.length <= 2){
+            return COMMAND_LIST_OK;
+        } else{
             switch (split[0].toLowerCase()){
                 case COMMAND_UPLOAD:
                     int fileCheckResult = FileUtil.checkValidFilePath(split[1]);
                     if(fileCheckResult == FileUtil.IS_FILE){ //检查文件路径是否存在,并且可读,确保文件存在
                         System.out.println("CommandUtil.parseStrCommand: send one file");
-                        RdmaUtil.uploadFile(split[1], REMOTE_TARGET_DIR);
-                        return COMMAND_OK;
+//                        RdmaUtil.uploadFile(split[1], RdfsClient.getRemoteRdmaDirectory());
+                        RdmaUtil.tmpFileUpdate(split[1], RdfsClient.getRemoteRdmaDirectory()); //使用RDMA传输,需要读取/tmp目录下临时文件,所以每次先更新临时文件
+                        RdmaUtil.uploadDir(split[1]);
+
+                        return COMMAND_UPLOAD_OK;
                     }else if(fileCheckResult == FileUtil.IS_DIR){ //检查文件路径是否存在,并且可读,确保目录存在
                         System.out.println("CommandUtil.parseStrCommand: send one directory");
-                        RdmaUtil.tmpFileUpdate(split[1], REMOTE_TARGET_DIR); //使用RDMA传输,需要读取/tmp目录下临时文件,所以每次先更新临时文件
+                        RdmaUtil.tmpFileUpdate(split[1], RdfsClient.getRemoteRdmaDirectory()); //使用RDMA传输,需要读取/tmp目录下临时文件,所以每次先更新临时文件
                         RdmaUtil.uploadDir(split[1]);
-                        return COMMAND_OK;
-                    }else
+                        return COMMAND_UPLOAD_OK;
+                    }else {
                         return COMMAND_ILLEGAL; //非法指令,指令参数有误,找不到文件
+                    }
                 case COMMAND_DOWNLOAD:
                     return COMMAND_UNSUPPORTED;
                 case COMMAND_DELETE:

@@ -1,8 +1,15 @@
 package com.ecnu.zz.utils;
 
+import com.ecnu.zz.core.RdfsClient;
+
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author : Bruce Zhao
@@ -15,6 +22,8 @@ public class FileUtil {
     public static final int IS_NOT_FILE_OR_DIR = 0;
     public static final int IS_FILE = 1;
     public static final int IS_DIR = 2;
+
+
 
 
     /*
@@ -110,13 +119,106 @@ public class FileUtil {
         }
 //        System.out.println("文件夹共有:" + folderNum + ",文件共有:" + fileNum);
 
-
-
     }
 
+    /*
+    @param: localPath 本地文件路径
+    @param: remoteTargetDirPath 传输到服务器的目标目录
+    @param: splitIndex 分割符所在的索引
+
+    localPath: /home/lab2/files/dir1/1
+    remoteTargetDirPath: /tmp/files/
+    splitIndex: 18
+    目的是拼接得到/tmp/files/dir1/1
+     */
     public static String parsePath(String localPath, String remoteTargetDirPath, int splitIndex){
 
         String substring = localPath.substring(splitIndex);
         return remoteTargetDirPath + substring;
+    }
+
+
+    /*
+    @param: filePaths 文件被发送到Server
+    被Agent调用
+     */
+    public static void buildLocalFileTree(ArrayList<String> filePaths) {
+        String AGENT_AGGREGATION = null;
+        if(RdfsClient.getRemoteRdmaAddress() == null){
+            AGENT_AGGREGATION = "/tmp/192.168.0.100/";
+        }else{
+            AGENT_AGGREGATION = "/tmp/" + RdfsClient.getRemoteRdmaAddress() + "/";
+        }
+        boolean isDir = true;
+        File dir = null;
+        File file = null;
+        for(String filePath : filePaths){
+            try {
+                if (isDir) {
+                    if (!filePath.endsWith("/")) { //是普通文件
+                        isDir = false;
+                        file = new File(AGENT_AGGREGATION + filePath);
+                        if (!file.exists()) {
+                            file.createNewFile();
+                        }
+                    } else { //确定是目录
+                        dir = new File(AGENT_AGGREGATION + filePath);
+                        if (!dir.exists()) {
+                            dir.mkdirs();
+                        }
+                    }
+                } else { //是普通文件
+                    file = new File(AGENT_AGGREGATION + filePath);
+                    if (!file.exists()) {
+                        file.createNewFile();
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    /*
+    Agent收到client发送的消息(所有传输的文件路径信息)之后,记录到本地的log文件中,重复的不记录
+     */
+    public static void logFileSimple(ArrayList<String> filePaths) {
+        File rdmaLogFile = new File("/tmp/rdma_log_file");
+        if(!rdmaLogFile.exists()){
+            try {
+                rdmaLogFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        BufferedWriter bwLog = null;
+        try {
+            bwLog = new BufferedWriter(new FileWriter(rdmaLogFile, true));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            LinkedHashSet<String> agentLogs = AgentLogUtil.getAgentLogs();
+            for (String filePath : filePaths) {
+                if(!agentLogs.contains(filePath))
+                    bwLog.write(filePath + "\n");
+            }
+            bwLog.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                bwLog.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //到这里, 存放到server的文件路径信息都写入了Agent自己的rdma_log_file中,但是为了效率的问题,同时写入一个结构中
+        AgentLogUtil agentLogUtil = new AgentLogUtil();
+        agentLogUtil.addAgentLogs(filePaths);
+
     }
 }

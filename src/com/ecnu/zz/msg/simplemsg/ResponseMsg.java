@@ -17,6 +17,18 @@ public class ResponseMsg implements Serializable {
      */
     private static final long serialVersionUID = 1L;
     private List<String> availStorages = new ArrayList<>();
+private ArrayList<String> listResults;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+    public ArrayList<String> getListResults() {
+        return listResults;
+    }
+
+    public void setListResults(ArrayList<String> listResults) {
+        this.listResults = listResults;
+    }
 
     public List<String> getAvailStorages() {
         return availStorages;
@@ -31,6 +43,7 @@ public class ResponseMsg implements Serializable {
     public String toString() {
         return "ResponseMsg{" +
                 "availStorages=" + availStorages +
+                ", listResults=" + listResults +
                 '}';
     }
 
