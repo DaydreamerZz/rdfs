@@ -51,10 +51,7 @@ public class RdfsAgent {
         protected void initChannel(SocketChannel socketChannel) throws Exception {
             socketChannel.pipeline().addLast(MarshallingCodeCFactory.buildMarshallingDecoder()); //in
             socketChannel.pipeline().addLast(MarshallingCodeCFactory.buildMarshallingEncoder()); //out
-//            socketChannel.pipeline().addLast(new StringEncoder());
-//            socketChannel.pipeline().addLast(new StringDecoder());
-
-            socketChannel.pipeline().addLast(new ServerHandler()); //in
+            socketChannel.pipeline().addLast(new AgentHandler()); //in
         }
     }
 

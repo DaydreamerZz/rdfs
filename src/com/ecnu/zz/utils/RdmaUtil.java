@@ -1,5 +1,7 @@
 package com.ecnu.zz.utils;
 
+import com.ecnu.zz.core.RdfsClient;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -11,22 +13,73 @@ import java.util.ArrayList;
  */
 public class RdmaUtil {
 
+
+
+    //这个列表用来记录每次发送的文件路径信息,用来在传输完成之后,RdfsClient将其中内容发送给RdmaAgent,所以这个列表每次都会重新初始化
+    public static ArrayList<String> fileNames = new ArrayList<>();
+    public static ArrayList<String> getFileNames() {
+        return fileNames;
+    }
+
+
+//rdcppy -f file.txt -c /home/lab2/rdcp.cfg 传输单个文件
+//rdcppy -d -c /home/lab2/rdcp.cfg 传输目录
+
     /*
-    处理本地和远程文件路径,并且写入临时文件中
+    @param filePath 传输单个文件, 文件本地文件路径
+     */
+    public static void uploadFile(String filePath, String remoteTargetDir) {
+        System.out.println("Rdma.uploadFile: " + filePath);
+        //start 为了把发送文件信息记录在fileNames列表中,这里多出来的处理步骤.在发送目录中不需要,因为已经处理好了
+            if(!remoteTargetDir.endsWith("/"))
+                remoteTargetDir += "/";
+        String substring = filePath.substring(filePath.lastIndexOf("/") + 1);
+
+//        fileNames = new ArrayList<>();
+        fileNames.add(remoteTargetDir + substring);
+//        System.out.println("ok: " + fileNames.get(0));
+        //end
+
+        InputStream in = null;
+        try{
+            if(RdfsClient.isDebugRdmaRun()){
+                System.out.println("use rdma send files");
+                Process process = Runtime.getRuntime().exec(new String[]{
+                        "rdcpj", "-f", filePath, "-c", "/home/lab2/rdcp.cfg" //-c指定RDMA的配置文件
+                });
+                process.waitFor();
+                in = process.getInputStream();
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(in));
+                char[] rdmaResult = new char[1024];
+                br.read(rdmaResult);
+                System.out.println(rdmaResult);
+            }else{
+                System.out.println("DEBUG: do not use rdma send files");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    /*
+    处理本地和远程文件路径,并且写入临时文件中,在uploadDir()方法之前被调用
     @param fileOrDirPath 传输为文件或者目录路径
     @param remoteTargetDirPath 本地文件传输到服务端存放的地址
      */
     public static void tmpFileUpdate(String fileOrDirPath, String remoteTargetDirPath) {
         File rdmaTmpFileLocal = new File("/tmp/rdma_files_local");
         File rdmaTmpFileRemote = new File("/tmp/rdma_files_remote");
-//        FileWriter fwLocal = null;
-//        FileWriter fwRemote = null;
+
         BufferedWriter bwLocal = null;
         BufferedWriter bwRemote = null;
 
         try {
-//            fwLocal = new FileWriter(rdmaTmpFileLocal);
-//            fwRemote = new FileWriter(rdmaTmpFileRemote);
             bwLocal = new BufferedWriter(new FileWriter(rdmaTmpFileLocal, false));
             bwRemote = new BufferedWriter(new FileWriter(rdmaTmpFileRemote, false));
         } catch (IOException e) {
@@ -41,6 +94,9 @@ public class RdmaUtil {
 
         FileUtil.traverseFolder(fileOrDirPath, remoteTargetDirPath, localDirs, localFiles, remoteDirs, remoteFiles); //得到所有本地文件路径,划分目录和文件
 
+        //为了发送给Agent发送的文件列表
+//        fileNames = new ArrayList<>();
+
         try {
             if (localDirs.size() == 0) { //只有发送一个本地文件
                 bwLocal.write(localFiles.get(0)+"\n");
@@ -50,14 +106,16 @@ public class RdmaUtil {
             } else {
                 int i, len;
                 len = localDirs.size();
-                for(i = 0; i < len; i++){
+                for(i = 0; i < len; i++){ //先把目录信息写入临时文件
                     bwRemote.write(remoteDirs.get(i) + "\n");
                     bwLocal.write(localDirs.get(i) + "\n");
+                    fileNames.add(remoteDirs.get(i));
                 }
                 len = localFiles.size();
-                for(i = 0; i < len; i++){
+                for(i = 0; i < len; i++){ //文件写入临时文件
                     bwRemote.write(remoteFiles.get(i) + "\n");
                     bwLocal.write(localFiles.get(i) + "\n");
+                    fileNames.add(remoteFiles.get(i));
                 }
                 bwLocal.flush();
                 bwRemote.flush();
@@ -76,52 +134,27 @@ public class RdmaUtil {
 
     }
 
-    /*
-    @param filePath 传输单个文件, 文件本地文件路径
-     */
-    public static void uploadFile(String filePath) {
-        System.out.println("Rdma.uploadFile: " + filePath);
-        InputStream in = null;
-        try{
-            //rdcppy -f file.txt -c /home/lab2/rdcp.cfg 传输单个文件
-            //rdcppy -d -c /home/lab2/rdcp.cfg 传输目录
-
-            Process process = Runtime.getRuntime().exec(new String[]{
-                    "rdcpj", "-f", filePath, "-c", "/home/lab2/rdcp.cfg" //-c指定RDMA的配置文件
-            });
-            process.waitFor();
-            in = process.getInputStream();
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            String result = br.readLine();
-            System.out.println(result);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-
     public static void uploadDir(String dirPath) {
         System.out.println("Rdma.uploadDir: " + dirPath);
         InputStream in = null;
         try{
             //rdcppy -c /home/lab2/rdcp.cfg
             //rdcppy file1.test.txt -b 409600 192.168.0.100:/home/lab1/files/
+            if(RdfsClient.isDebugRdmaRun()) {
+                System.out.println("use rdma send files");
+                Process process = Runtime.getRuntime().exec(new String[]{
+                        "rdcpj", "-d", "-c", "/home/lab2/rdcp.cfg" //-c指定RDMA的配置文件
+                });
+                process.waitFor();
+                in = process.getInputStream();
 
-            Process process = Runtime.getRuntime().exec(new String[]{
-                    "rdcpj", "-d", "-c", "/home/lab2/rdcp.cfg" //-c指定RDMA的配置文件
-            });
-            process.waitFor();
-            in = process.getInputStream();
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            char[] rdmaResult = new char[4096];
-            br.read(rdmaResult);
-            System.out.println(rdmaResult);
-
+                BufferedReader br = new BufferedReader(new InputStreamReader(in));
+                char[] rdmaResult = new char[4096];
+                br.read(rdmaResult);
+                System.out.println(rdmaResult);
+            }else {
+                System.out.println("DEBUG: do not use rdma send files");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

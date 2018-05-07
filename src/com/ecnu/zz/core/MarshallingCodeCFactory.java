@@ -6,10 +6,10 @@ import org.jboss.marshalling.Marshalling;
 import org.jboss.marshalling.MarshallingConfiguration;
 
 /**
- * author : Bruce Zhao
- * email  : zhzh402@163.com
- * date   : 2018/4/20 12:05
- * desc   :
+ * @author : Bruce Zhao
+ * @email  : zhzh402@163.com
+ * @date   : 2018/4/20 12:05
+ * @desc   :
  */
 public final class MarshallingCodeCFactory {
 

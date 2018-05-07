@@ -1,6 +1,7 @@
 package com.ecnu.zz.core;
 
 //import Ch8Protobuf.SubscribeReqProto;
+import com.ecnu.zz.msg.simplemsg.ResponseMsg;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -18,7 +19,10 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println("Receive server response: " + msg);
+        ResponseMsg responseMsg = (ResponseMsg) msg;
+        RdfsClient.setRemoteRdmaAddress(((ResponseMsg) msg).getAvailStorages().get(0));
+        System.out.println("Receive server response: " + responseMsg);
+        System.out.println("Chosen remote RDMA server address: " + RdfsClient.getRemoteRdmaAddress() );
     }
 
     @Override

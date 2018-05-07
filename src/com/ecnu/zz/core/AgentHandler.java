@@ -1,9 +1,13 @@
 package com.ecnu.zz.core;
 
 
+import com.ecnu.zz.msg.simplemsg.ClientToAgentFilesMsg;
 import com.ecnu.zz.msg.simplemsg.ResponseMsg;
+import com.ecnu.zz.utils.FileUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+
+import java.util.List;
 
 /**
  * @author : Bruce Zhao
@@ -11,13 +15,13 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * @date : 2018/3/26 12:28
  * @desc :
  */
-public class ServerHandler extends ChannelInboundHandlerAdapter {
+public class AgentHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         ResponseMsg responseMsg = new ResponseMsg();
         responseMsg.addAvailStorage("192.168.0.100");
-        responseMsg.addAvailStorage("192.168.0.110");
+        responseMsg.addAvailStorage("192.168.0.100");
         ctx.writeAndFlush(responseMsg);
     }
 
@@ -32,6 +36,15 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 //            ctx.writeAndFlush(resp(req.getSubReqID()));
             ctx.writeAndFlush(resp(req.getSubReqID()));
         }*/
+        ClientToAgentFilesMsg clientToAgentMsg = (ClientToAgentFilesMsg) msg;
+        List<String> fileNames = clientToAgentMsg.getFileNames();
+        String remoteRdmaAddress = clientToAgentMsg.getRemoteRdmaAddress();
+
+
+//        FileUtil.buildLocalFileTree(fileNames); //Agent在本地建立文件信息,方便程序使用
+//        FileUtil.logFileFromInfo(fileNames, remoteRdmaAddress); //在日志文件中记录每个文件的属于哪个服务器,也就是记录文件所在的ip地址
+
+
         System.out.println("client: " + msg);
     }
 
