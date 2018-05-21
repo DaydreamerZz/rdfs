@@ -6,9 +6,10 @@ import java.util.List;
 
 /**
  * @author : Bruce Zhao
- * @email : zhzh402@163.com
- * @date : 2018/4/27 13:02
- * @desc :
+ * @email  : zhzh402@163.com
+ * @date   : 2018/4/27 13:02
+ * @desc   : agent收到client的连接请求之后,agent需要向client发送一些已知的数据,包括可用的服务器ip地址,已有的目录树信息
+ *
  */
 public class ResponseMsg implements Serializable {
 

@@ -71,8 +71,11 @@ public class RdmaUtil {
     处理本地和远程文件路径,并且写入临时文件中,在uploadDir()方法之前被调用
     @param fileOrDirPath 传输为文件或者目录路径
     @param remoteTargetDirPath 本地文件传输到服务端存放的地址
+    @return 返回所有文件的大小MB
      */
-    public static void tmpFileUpdate(String fileOrDirPath, String remoteTargetDirPath) {
+    public static long tmpFileUpdate(String fileOrDirPath, String remoteTargetDirPath) {
+        long totolSize = 0;
+
         File rdmaTmpFileLocal = new File("/tmp/rdma_files_local");
         File rdmaTmpFileRemote = new File("/tmp/rdma_files_remote");
 
@@ -92,7 +95,7 @@ public class RdmaUtil {
         ArrayList<String> remoteDirs = new ArrayList<>();
         ArrayList<String> remoteFiles = new ArrayList<>();
 
-        FileUtil.traverseFolder(fileOrDirPath, remoteTargetDirPath, localDirs, localFiles, remoteDirs, remoteFiles); //得到所有本地文件路径,划分目录和文件
+        totolSize = FileUtil.traverseFolder(fileOrDirPath, remoteTargetDirPath, localDirs, localFiles, remoteDirs, remoteFiles);//得到所有本地文件路径,划分目录和文件
 
         //为了发送给Agent发送的文件列表
 //        fileNames = new ArrayList<>();
@@ -130,7 +133,7 @@ public class RdmaUtil {
                 e.printStackTrace();
             }
         }
-
+        return totolSize;
 
     }
 

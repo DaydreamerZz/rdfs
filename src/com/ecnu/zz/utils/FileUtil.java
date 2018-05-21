@@ -22,6 +22,7 @@ public class FileUtil {
     public static final int IS_NOT_FILE_OR_DIR = 0;
     public static final int IS_FILE = 1;
     public static final int IS_DIR = 2;
+    public static final int _1MB = 1024 * 1024;
 
 
 
@@ -48,12 +49,17 @@ public class FileUtil {
 
     /*
     @param fileOrDirPath 如果是文件路径,那么只会咋localFiles和remoteFiles添加相应的路径;如果是目录路径,会遍历目录下目录和文件,且目录本身也被添加到localDirs中.
+    @return 返回所有文件的大小MB
      */
-    public static void traverseFolder(String fileOrDirPath, String remoteTargetDirPath, ArrayList<String> localDirs, ArrayList<String> localFiles, ArrayList<String> remoteDirs, ArrayList<String> remoteFiles) {
+    public static long traverseFolder(String fileOrDirPath, String remoteTargetDirPath, ArrayList<String> localDirs, ArrayList<String> localFiles, ArrayList<String> remoteDirs, ArrayList<String> remoteFiles) {
 //        int fileNum = 0, folderNum = 0;
+        long totalSize = 0;
+
         File file = new File(fileOrDirPath);
         if(file.isFile()){
             localFiles.add(file.getAbsolutePath());
+//            totalSize += file.getTotalSpace();
+            totalSize += file.length();
         }else {
             if(fileOrDirPath.endsWith("/")){
                 localDirs.add(fileOrDirPath);
@@ -74,6 +80,7 @@ public class FileUtil {
 //                    System.out.println("文件:" + f.getAbsolutePath());
 //                    fileNum++;
                     localFiles.add(f.getAbsolutePath());
+                    totalSize += f.length();
                 }
             }
             File tmpFile;
@@ -87,6 +94,7 @@ public class FileUtil {
                         localDirs.add(f2.getAbsolutePath() + "/");
                         list.add(f2);
                     } else {
+                        totalSize += f2.length();
                         localFiles.add(f2.getAbsolutePath());
 //                        System.out.println("文件:" + f2.getAbsolutePath());
 //                        fileNum++;
@@ -100,6 +108,7 @@ public class FileUtil {
         if(!remoteTargetDirPath.endsWith("/")){
             remoteTargetDirPath += "/";
         }
+
         if(localDirs.size() == 0){ //说明只有一个文件,处理好文件路径就可以了
             String localPath = localFiles.get(0);
             int splitIndex = localPath.lastIndexOf('/')+1;
@@ -118,6 +127,7 @@ public class FileUtil {
             }
         }
 //        System.out.println("文件夹共有:" + folderNum + ",文件共有:" + fileNum);
+        return totalSize / _1MB;
 
     }
 

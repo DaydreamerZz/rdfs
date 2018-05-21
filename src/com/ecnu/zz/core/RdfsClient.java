@@ -23,6 +23,7 @@ public class RdfsClient {
 
     public static String remoteRdmaAddress = null;
     public static String remoteRdmaDirectory = "/mnt/nvm/";
+//    public static String remoteRdmaDirectory = "/mnt/ext/";
 
     //DEBUG选项,false不使用rdma上传,true使用上传
 //    public static boolean DEBUG_RDMA_RUN = false;

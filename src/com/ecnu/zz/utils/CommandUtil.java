@@ -31,6 +31,8 @@ public class CommandUtil {
         if(strCommand == null || strCommand.length() == 0) //空指令，直接返回
             return COMMAND_NULL;
 
+        long start, totalSize;
+
         String[] split = strCommand.split(" ");
         if(split[0].toLowerCase().equals(COMMAND_LIST) && split.length <= 2){
             return COMMAND_LIST_OK;
@@ -41,14 +43,18 @@ public class CommandUtil {
                     if(fileCheckResult == FileUtil.IS_FILE){ //检查文件路径是否存在,并且可读,确保文件存在
                         System.out.println("CommandUtil.parseStrCommand: send one file");
 //                        RdmaUtil.uploadFile(split[1], RdfsClient.getRemoteRdmaDirectory());
-                        RdmaUtil.tmpFileUpdate(split[1], RdfsClient.getRemoteRdmaDirectory()); //使用RDMA传输,需要读取/tmp目录下临时文件,所以每次先更新临时文件
-                        RdmaUtil.uploadDir(split[1]);
+                        totalSize = RdmaUtil.tmpFileUpdate(split[1], RdfsClient.getRemoteRdmaDirectory());//使用RDMA传输,需要读取/tmp目录下临时文件,所以每次先更新临时文件
 
+                        start = TimeUtil.start();
+                        RdmaUtil.uploadDir(split[1]);
+                        System.out.println("file size: " + totalSize + "MB transmission time : " + TimeUtil.getPeriod(start) + "s") ;
                         return COMMAND_UPLOAD_OK;
                     }else if(fileCheckResult == FileUtil.IS_DIR){ //检查文件路径是否存在,并且可读,确保目录存在
                         System.out.println("CommandUtil.parseStrCommand: send one directory");
-                        RdmaUtil.tmpFileUpdate(split[1], RdfsClient.getRemoteRdmaDirectory()); //使用RDMA传输,需要读取/tmp目录下临时文件,所以每次先更新临时文件
+                        totalSize = RdmaUtil.tmpFileUpdate(split[1], RdfsClient.getRemoteRdmaDirectory()); //使用RDMA传输,需要读取/tmp目录下临时文件,所以每次先更新临时文件
+                        start = TimeUtil.start();
                         RdmaUtil.uploadDir(split[1]);
+                        System.out.println("file size: " + totalSize + "MB transmission time :" + TimeUtil.getPeriod(start) + "s");
                         return COMMAND_UPLOAD_OK;
                     }else {
                         return COMMAND_ILLEGAL; //非法指令,指令参数有误,找不到文件
