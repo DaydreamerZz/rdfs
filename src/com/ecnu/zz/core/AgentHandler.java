@@ -28,7 +28,6 @@ public class AgentHandler extends ChannelInboundHandlerAdapter {
         int key = remoteAddress.hashCode() % 2;
 //        System.out.println(key);
 
-
         ResponseMsg responseMsg = new ResponseMsg();
         responseMsg.setTargetStorage(Storage.get(key)); //根据客户端的ip地址选择了存放数据的服务器地址,返回给client
 
@@ -53,20 +52,21 @@ public class AgentHandler extends ChannelInboundHandlerAdapter {
         }*/
         ClientToAgentFilesMsg clientToAgentMsg = (ClientToAgentFilesMsg) msg;
         ArrayList<String> filePaths = clientToAgentMsg.getFilePaths();
-        String remoteRdmaAddress = clientToAgentMsg.getRemoteRdmaAddress();
+//        String remoteRdmaAddress = clientToAgentMsg.getRemoteRdmaAddress();
 
-        System.out.println("AgentHandler.channelRead" + clientToAgentMsg);
+        System.out.println("AgentHandler.channelRead() " + clientToAgentMsg);
 //这个方式是在Agent完全重建目录树的结构,但是时候又没有必要
 //        FileUtil.buildLocalFileTree(filePaths); //Agent在本地建立文件信息,方便程序使用
 
 //        FileUtil.logFileWithFromAddress(filePaths, remoteRdmaAddress); //在日志文件中记录每个文件的属于哪个服务器,也就是记录文件所在的ip地址
+        String commandStr = clientToAgentMsg.getCommandStr();
+        ResponseMsg responseMsg = new ResponseMsg();
 
-        if(clientToAgentMsg.getCommandStr().startsWith("upload")){
-            FileUtil.logFileSimple(filePaths);
-        }else if(clientToAgentMsg.getCommandStr().startsWith("list")){
+        if(commandStr.startsWith("upload")){
+            AgentLogUtil.logFileSimple(filePaths);
+            responseMsg.setAgentMaintainDirTree(AgentLogUtil.getAgentDirTree());
+        }else if(commandStr.startsWith("list")){
             //Agent执行list指令,返回结果给client
-            ResponseMsg responseMsg = new ResponseMsg();
-
 
             String[] split = clientToAgentMsg.getCommandStr().split(" ");
             ArrayList<String> listResult = new ArrayList<>();
@@ -84,8 +84,30 @@ public class AgentHandler extends ChannelInboundHandlerAdapter {
             responseMsg.setListResults(listResult);
             System.out.println("AgentHandler.channelRead 发送list结果给client: \n" + responseMsg);
 
-            ctx.writeAndFlush(responseMsg);
+//            ctx.writeAndFlush(responseMsg);
+        }else if(commandStr.startsWith("delete")){ //只要修改目录树信息就可以了,同时要记录日志
+            String[] split = clientToAgentMsg.getCommandStr().split(" ");
+            String removeTarget = split[1];
+
+            LinkedHashSet<String> agentDirTree = AgentLogUtil.getAgentDirTree();
+            ArrayList<String> deletedList = new ArrayList<>();
+            Iterator<String> iterator = agentDirTree.iterator();
+            String path;
+            while(iterator.hasNext()){
+                path = iterator.next();
+                if(path.startsWith(removeTarget)){
+                    iterator.remove();
+                    deletedList.add(path);
+                }
+            }
+            responseMsg.setAgentMaintainDirTree(agentDirTree);
+            AgentLogUtil.appendDeleteLog(deletedList);
+
+            AgentLogUtil.rebuildDirTreeLog(agentDirTree);
         }
+
+        ctx.writeAndFlush(responseMsg);
+
 
 
         System.out.println("AgentHandler.channelRead client: " + msg);

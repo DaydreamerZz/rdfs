@@ -6,9 +6,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * @author : Bruce Zhao
@@ -142,7 +140,7 @@ public class FileUtil {
     /*
     @param: filePaths 文件被发送到Server
     被Agent调用
-     */
+     *//*
     public static void buildLocalFileTree(ArrayList<String> filePaths) {
         String AGENT_AGGREGATION = null;
         if(RdfsClient.getRemoteRdmaAddress() == null){
@@ -178,7 +176,7 @@ public class FileUtil {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 
 
     /*
@@ -217,9 +215,23 @@ public class FileUtil {
             }
         }
 
-        //到这里, 存放到server的文件路径信息都写入了Agent自己的rdma_log_file中,但是为了效率的问题,同时写入一个结构中
+        //到这里, 存放到server的文件路径信息都写入了Agent自己的rdma_log_file中,但是为了效率的问题,同时写入一个内存结构,方便查找
         AgentLogUtil agentLogUtil = new AgentLogUtil();
         agentLogUtil.addAgentDirTree(filePaths);
 
+    }
+
+    public static String formatDirTree(HashSet<String> agentDirTreeDup) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n");
+        Iterator<String> iterator = agentDirTreeDup.iterator();
+        String str;
+        while (iterator.hasNext()){
+            String next = iterator.next();
+            if(next.endsWith("/")){
+                sb.append(next + "\n");
+            }
+        }
+        return sb.toString();
     }
 }

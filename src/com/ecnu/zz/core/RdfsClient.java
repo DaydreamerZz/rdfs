@@ -138,7 +138,12 @@ public class RdfsClient {
                     msg = new ClientToAgentFilesMsg();
                     msg.setCommandStr(command);
                     channel.writeAndFlush(msg);
-                }else if(result == CommandUtil.COMMAND_NULL){
+                }else if(result == CommandUtil.COMMAND_DELETT_OK){
+                    msg = new ClientToAgentFilesMsg();
+                    msg.setCommandStr(command);
+                    channel.writeAndFlush(msg);
+                }
+                else if(result == CommandUtil.COMMAND_NULL){
                     System.out.println("Command can not be empty");
                 }else if(result == CommandUtil.COMMAND_UNSUPPORTED){
                     System.out.println("Command: " + command + " not supported");

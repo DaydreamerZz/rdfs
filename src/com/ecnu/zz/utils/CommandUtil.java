@@ -17,7 +17,7 @@ public class CommandUtil {
     public static final int COMMAND_UNKNOWN = 4;
     public static final int COMMAND_UPLOAD_OK = 5;
     public static final int COMMAND_LIST_OK = 6;
-
+    public static final int COMMAND_DELETT_OK = 7;
 
     public static final String COMMAND_UPLOAD = "upload";
     public static final String COMMAND_DOWNLOAD = "download";
@@ -64,7 +64,7 @@ public class CommandUtil {
                 case COMMAND_DOWNLOAD:
                     return COMMAND_UNSUPPORTED;
                 case COMMAND_DELETE:
-                    return COMMAND_UNSUPPORTED;
+                    return COMMAND_DELETT_OK;
                 default:
                     return COMMAND_UNKNOWN;
             }

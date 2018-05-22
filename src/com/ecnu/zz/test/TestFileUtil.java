@@ -50,7 +50,7 @@ public class TestFileUtil {
 
 
 
-        fileUtil.buildLocalFileTree(filePaths);
+//        fileUtil.buildLocalFileTree(filePaths);
     }
 
     public static void testLogFileSimple(FileUtil fileUtil){

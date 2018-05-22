@@ -2,6 +2,7 @@ package com.ecnu.zz.core;
 
 //import Ch8Protobuf.SubscribeReqProto;
 import com.ecnu.zz.msg.simplemsg.ResponseMsg;
+import com.ecnu.zz.utils.FileUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -21,15 +22,16 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ResponseMsg responseMsg = (ResponseMsg) msg;
         if(responseMsg.getListResults() == null){ //不是list指令查询结果
-//            int randomStorageIndex = (int) (Math.random() * (responseMsg.getAvailStorages().size()));
-//            RdfsClient.setRemoteRdmaAddress(responseMsg.getAvailStorages().get(randomStorageIndex));
-            RdfsClient.setRemoteRdmaAddress(responseMsg.getTargetStorage());
-//            RdfsClient.setRemoteRdmaAddress(responseMsg.getAvailStorages().get(0));
+            if(RdfsClient.getRemoteRdmaAddress() == null){ //说明还未初始化,第一次从agent得到storage地址,目录树等信息
+                RdfsClient.setRemoteRdmaAddress(responseMsg.getTargetStorage());
+                System.out.println("Chosen remote RDMA server address: " + RdfsClient.getRemoteRdmaAddress());
+            }
             RdfsClient.setAgentDirTreeDup(responseMsg.getAgentMaintainDirTree());
-
             System.out.println("Receive server response: " + responseMsg);
-            System.out.println("Chosen remote RDMA server address: " + RdfsClient.getRemoteRdmaAddress());
-        }else {
+//            System.out.println("current local dir tree: " + RdfsClient.getAgentDirTreeDup());
+            System.out.println("current local dir tree: " + FileUtil.formatDirTree(RdfsClient.getAgentDirTreeDup()));
+
+        }else { //这里主要是list命令的返回结果
             System.out.println("Receive server response: " + responseMsg.getListResults());
         }
     }
