@@ -15,25 +15,25 @@ import java.util.LinkedHashSet;
  */
 public class AgentLogUtil {
 
-//    private ArrayList<String> agentLogs = new ArrayList<>();
-    private static LinkedHashSet<String> agentLogs = new LinkedHashSet();
-    public static LinkedHashSet<String> getAgentLogs(){
-        return agentLogs;
+//    private ArrayList<String> agentDirTree = new ArrayList<>();
+    private static LinkedHashSet<String> agentDirTree = new LinkedHashSet();
+    public static LinkedHashSet<String> getAgentDirTree(){
+        return agentDirTree;
     }
 
-    public void addAgentLogs(ArrayList<String> logs){
+    public void addAgentDirTree(ArrayList<String> logs){
         for(String log : logs){
-            /*if(!agentLogs.contains(log)){
-                agentLogs.add(log);
+            /*if(!agentDirTree.contains(log)){
+                agentDirTree.add(log);
             }*/
-            agentLogs.add(log);
+            agentDirTree.add(log);
         }
 
-        System.out.println("AgentLogUtil.addAgentLogs: " + agentLogs);
+        System.out.println("AgentLogUtil.addAgentDirTree: " + agentDirTree);
     }
 
-    public static void rebuildAgentLogs(){
-        if(agentLogs.size() != 0)
+    public static void rebuildAgentDirTree(){
+        if(agentDirTree.size() != 0)
             return;
         BufferedReader brLog = null;
 
@@ -46,7 +46,7 @@ public class AgentLogUtil {
         String line;
         try {
             while ((line = brLog.readLine()) != null) {
-                agentLogs.add(line);
+                agentDirTree.add(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,7 +58,7 @@ public class AgentLogUtil {
             }
         }
 
-        System.out.println("AgentLogUtil.rebuildAgentLogs rebuild agent's log structure: " + agentLogs);
+        System.out.println("AgentLogUtil.rebuildAgentDirTree rebuild agent's log structure: " + agentDirTree);
     }
 
 }

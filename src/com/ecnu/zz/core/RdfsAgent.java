@@ -1,5 +1,6 @@
 package com.ecnu.zz.core;
 
+import com.ecnu.zz.utils.AgentLogUtil;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -21,6 +22,11 @@ public class RdfsAgent {
 
     public static void main(String[] args) throws Exception {
         int port = 8080;
+        Storage.add("192.168.0.100");
+        Storage.add("192.168.100.100");
+        AgentLogUtil.rebuildAgentDirTree(); //重建agent维护的目录树结构
+
+
         new RdfsAgent().bind(8080);
     }
 

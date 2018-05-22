@@ -16,7 +16,7 @@ public class RdmaUtil {
 
 
     //这个列表用来记录每次发送的文件路径信息,用来在传输完成之后,RdfsClient将其中内容发送给RdmaAgent,所以这个列表每次都会重新初始化
-    public static ArrayList<String> filePaths = new ArrayList<>();
+    public static ArrayList<String> filePaths;
     public static ArrayList<String> getFilePaths() {
         return filePaths;
     }
@@ -73,8 +73,9 @@ public class RdmaUtil {
     @param remoteTargetDirPath 本地文件传输到服务端存放的地址
     @return 返回所有文件的大小MB
      */
-    public static long tmpFileUpdate(String fileOrDirPath, String remoteTargetDirPath) {
-        long totolSize = 0;
+    public static double tmpFileUpdate(String fileOrDirPath, String remoteTargetDirPath) {
+        double totolSize = 0;
+        filePaths = new ArrayList<>();
 
         File rdmaTmpFileLocal = new File("/tmp/rdma_files_local");
         File rdmaTmpFileRemote = new File("/tmp/rdma_files_remote");
@@ -104,6 +105,7 @@ public class RdmaUtil {
             if (localDirs.size() == 0) { //只有发送一个本地文件
                 bwLocal.write(localFiles.get(0)+"\n");
                 bwRemote.write(remoteFiles.get(0)+"\n");
+                filePaths.add(remoteFiles.get(0));
                 bwLocal.flush();
                 bwRemote.flush();
             } else {
@@ -145,9 +147,13 @@ public class RdmaUtil {
             //rdcppy file1.test.txt -b 409600 192.168.0.100:/home/lab1/files/
             if(RdfsClient.isDebugRdmaRun()) {
                 System.out.println("use rdma send files");
-                Process process = Runtime.getRuntime().exec(new String[]{
+                /*Process process = Runtime.getRuntime().exec(new String[]{
                         "rdcpj", "-d", "-c", "/home/lab2/rdcp.cfg" //-c指定RDMA的配置文件
+                });*/
+                Process process = Runtime.getRuntime().exec(new String[]{
+                        "rdcpj", "-d", "-b", "10485760", "-c", RdfsClient.getRemoteRdmaAddress() //-c指定RDMA的配置文件
                 });
+
                 process.waitFor();
                 in = process.getInputStream();
 

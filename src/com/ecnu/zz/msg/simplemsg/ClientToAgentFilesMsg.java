@@ -18,9 +18,9 @@ remoteRdmaAddress和filePaths都作用在upload命令上, 第一个是记录clie
  */
 public class ClientToAgentFilesMsg implements Serializable{
     private static final long serialVersionUID = 1L;
-    private String commandStr;
-    private String remoteRdmaAddress;
-    private ArrayList<String> filePaths;
+    private String commandStr; //客户端当前执行的指令
+    private String remoteRdmaAddress; //远程客户端的地址
+    private ArrayList<String> filePaths; //
 
     public String getRemoteRdmaAddress() {
         return remoteRdmaAddress;

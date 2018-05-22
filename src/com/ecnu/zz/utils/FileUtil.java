@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @author : Bruce Zhao
@@ -46,12 +45,11 @@ public class FileUtil {
 
     }
 
-
     /*
     @param fileOrDirPath 如果是文件路径,那么只会咋localFiles和remoteFiles添加相应的路径;如果是目录路径,会遍历目录下目录和文件,且目录本身也被添加到localDirs中.
     @return 返回所有文件的大小MB
      */
-    public static long traverseFolder(String fileOrDirPath, String remoteTargetDirPath, ArrayList<String> localDirs, ArrayList<String> localFiles, ArrayList<String> remoteDirs, ArrayList<String> remoteFiles) {
+    public static double traverseFolder(String fileOrDirPath, String remoteTargetDirPath, ArrayList<String> localDirs, ArrayList<String> localFiles, ArrayList<String> remoteDirs, ArrayList<String> remoteFiles) {
 //        int fileNum = 0, folderNum = 0;
         long totalSize = 0;
 
@@ -63,7 +61,7 @@ public class FileUtil {
         }else {
             if(fileOrDirPath.endsWith("/")){
                 localDirs.add(fileOrDirPath);
-                fileOrDirPath = fileOrDirPath.substring(0, fileOrDirPath.length()-1);
+//                fileOrDirPath = fileOrDirPath.substring(0, fileOrDirPath.length()-1);
             }else{
                 localDirs.add(fileOrDirPath + "/");
             }
@@ -72,13 +70,9 @@ public class FileUtil {
             File[] files = file.listFiles();
             for (File f : files) {
                 if (f.isDirectory()) {
-//                    System.out.println("文件夹:" + f.getAbsolutePath());
-//                    folderNum++;
                     localDirs.add(f.getAbsolutePath() + "/");
                     list.add(f);
                 } else {
-//                    System.out.println("文件:" + f.getAbsolutePath());
-//                    fileNum++;
                     localFiles.add(f.getAbsolutePath());
                     totalSize += f.length();
                 }
@@ -89,15 +83,12 @@ public class FileUtil {
                 files = tmpFile.listFiles();
                 for (File f2 : files) {
                     if (f2.isDirectory()) {
-//                        System.out.println("文件夹:" + file2.getAbsolutePath());
-//                        folderNum++;
                         localDirs.add(f2.getAbsolutePath() + "/");
                         list.add(f2);
                     } else {
                         totalSize += f2.length();
                         localFiles.add(f2.getAbsolutePath());
-//                        System.out.println("文件:" + f2.getAbsolutePath());
-//                        fileNum++;
+
                     }
                 }
             }
@@ -127,7 +118,7 @@ public class FileUtil {
             }
         }
 //        System.out.println("文件夹共有:" + folderNum + ",文件共有:" + fileNum);
-        return totalSize / _1MB;
+        return (totalSize*1.0) / _1MB;
 
     }
 
@@ -210,7 +201,7 @@ public class FileUtil {
         }
 
         try {
-            LinkedHashSet<String> agentLogs = AgentLogUtil.getAgentLogs();
+            LinkedHashSet<String> agentLogs = AgentLogUtil.getAgentDirTree();
             for (String filePath : filePaths) {
                 if(!agentLogs.contains(filePath))
                     bwLog.write(filePath + "\n");
@@ -228,7 +219,7 @@ public class FileUtil {
 
         //到这里, 存放到server的文件路径信息都写入了Agent自己的rdma_log_file中,但是为了效率的问题,同时写入一个结构中
         AgentLogUtil agentLogUtil = new AgentLogUtil();
-        agentLogUtil.addAgentLogs(filePaths);
+        agentLogUtil.addAgentDirTree(filePaths);
 
     }
 }

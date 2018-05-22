@@ -1,17 +1,15 @@
 package com.ecnu.zz.core;
 
 
-import com.ecnu.zz.msg.simplemsg.AgentToClientMsg;
 import com.ecnu.zz.msg.simplemsg.ClientToAgentFilesMsg;
 import com.ecnu.zz.msg.simplemsg.ResponseMsg;
 import com.ecnu.zz.utils.AgentLogUtil;
 import com.ecnu.zz.utils.FileUtil;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author : Bruce Zhao
@@ -23,13 +21,23 @@ public class AgentHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        Channel incoming = ctx.channel();
+        String remoteAddress = incoming.remoteAddress().toString();
+        remoteAddress = remoteAddress.substring(1, remoteAddress.indexOf(":"));
+//        System.out.println(remoteAddress);
+        int key = remoteAddress.hashCode() % 2;
+//        System.out.println(key);
+
+
         ResponseMsg responseMsg = new ResponseMsg();
-        responseMsg.addAvailStorage("192.168.0.100");
-        responseMsg.addAvailStorage("192.168.0.100");
+        responseMsg.setTargetStorage(Storage.get(key)); //根据客户端的ip地址选择了存放数据的服务器地址,返回给client
+
+        /*HashSet<String> dirTree = new HashSet<>();
+        Collections.copy(dirTree, AgentLogUtil.getAgentDirTree());*/
+        responseMsg.setAgentMaintainDirTree(AgentLogUtil.getAgentDirTree());
+
         ctx.writeAndFlush(responseMsg);
 
-        //
-        AgentLogUtil.rebuildAgentLogs();
 
     }
 
@@ -62,7 +70,7 @@ public class AgentHandler extends ChannelInboundHandlerAdapter {
 
             String[] split = clientToAgentMsg.getCommandStr().split(" ");
             ArrayList<String> listResult = new ArrayList<>();
-            Iterator<String> iterator = AgentLogUtil.getAgentLogs().iterator();
+            Iterator<String> iterator = AgentLogUtil.getAgentDirTree().iterator();
             if(split.length == 1){ //只有一个list指令,那么返回一级目录就可以了
                 listResult.add(iterator.next());
             }else{

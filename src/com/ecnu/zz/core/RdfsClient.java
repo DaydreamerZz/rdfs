@@ -12,45 +12,66 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * @author : Bruce Zhao
- * @email : zhzh402@163.com
- * @date : 2018/3/25 19:17
- * @desc :
+ * @email  : zhzh402@163.com
+ * @date   : 2018/3/25 19:17
+ * @desc   :
  */
 public class RdfsClient {
 
     public static String remoteRdmaAddress = null;
     public static String remoteRdmaDirectory = "/mnt/nvm/";
-//    public static String remoteRdmaDirectory = "/mnt/ext/";
+    public static HashSet<String> agentDirTreeDup;
+
+
+    //    public static String remoteRdmaDirectory = "/mnt/ext/";
 
     //DEBUG选项,false不使用rdma上传,true使用上传
-//    public static boolean DEBUG_RDMA_RUN = false;
-    public static boolean DEBUG_RDMA_RUN = true;
 
+    public static boolean DEBUG_RDMA_NOT_RUN = false; //在isDebugRdmaRun返回这个值的时候,不使用rdma发送,也就是假装发送
+    public static boolean DEBUG_RDMA_RUN = true; //真的使用rdma发送
+
+    /*
+     * client对应的远程地址
+     */
     public static String getRemoteRdmaAddress() {
         return remoteRdmaAddress;
     }
     public static void setRemoteRdmaAddress(String remoteRdmaAddress) {
         RdfsClient.remoteRdmaAddress = remoteRdmaAddress;
     }
-
+    /*
+     * client对应的远程目录
+     */
     public static String getRemoteRdmaDirectory() {
         return remoteRdmaDirectory;
     }
-    public static void setRemoteRdmaDirectory(String remoteRdmaDirectory) {
+    public static void setRemoteRdmaDirectory(String remoteRdmaDirectoryk) {
         RdfsClient.remoteRdmaDirectory = remoteRdmaDirectory;
     }
 
+    /*
+     * client接收到的server发送来的目录树
+     */
+    public static HashSet<String> getAgentDirTreeDup() {
+        return agentDirTreeDup;
+    }
+    public static void setAgentDirTreeDup(HashSet<String> agentDirTreeDup) {
+        RdfsClient.agentDirTreeDup = agentDirTreeDup;
+    }
+
     public static boolean isDebugRdmaRun() {
-        return DEBUG_RDMA_RUN;
+        return DEBUG_RDMA_NOT_RUN;
+//        return DEBUG_RDMA_RUN;
     }
 
     public static void main(String[] args){
         try {
             new RdfsClient().connect("127.0.0.1", 8080);
-//            new RdfsClient().connect("219.228.135.43", 8080);
+//            new RdfsClient().connect("219.228.135.215", 8080);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -109,7 +130,7 @@ public class RdfsClient {
                     msg.setCommandStr(command);
                     msg.setFileNames(sendFileNames);
                     msg.setRemoteRdmaAddress(RdfsClient.getRemoteRdmaAddress());
-                    System.out.println("RdfsClient in while before send: " + msg);
+                    System.out.println("RdfsClient in connect() before send: " + msg);
 
                     channel.writeAndFlush(msg);
                     fileNames.clear();
