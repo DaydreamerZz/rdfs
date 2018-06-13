@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>cn.ecnu</groupId>
+    <artifactId>rdfs</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.22.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>marshalling</groupId>
+            <artifactId>marshalling</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>/home/lab2/library/marshalling/jboss-marshalling-1.3.0.CR9.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>serial</groupId>
+            <artifactId>serial</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>/home/lab2/library/marshalling/jboss-marshalling-serial-1.3.0.CR9.jar</systemPath>
+        </dependency>
+
+        <!--<dependency>
+            <groupId>org.jboss.marshalling</groupId>
+            <artifactId>jboss-marshalling-serial</artifactId>
+            <version>2.0.5.Final</version>
+            <scope>test</scope>
+        </dependency>-->
+
+        <!--真是见了鬼了,pom的marshalling这么都无法进行通信,用本地的就可以了.-->
+        <!--<dependency>
+            <groupId>org.jboss.marshalling</groupId>
+            <artifactId>jboss-marshalling</artifactId>
+            <version>1.3.0.CR9</version>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.marshalling</groupId>
+            <artifactId>jboss-marshalling-serial</artifactId>
+            <version>1.3.0.CR9</version>
+            <scope>system</scope>
+        </dependency>-->
+
+        <!--<dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.5.1</version>
+        </dependency>-->
+
+
+    </dependencies>
+
+
+</project>
