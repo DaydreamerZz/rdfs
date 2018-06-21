@@ -78,8 +78,8 @@ public class RdmaUtil {
         double totolSize = 0;
         filePaths = new ArrayList<>();
 
-        File rdmaTmpFileLocal = new File("/tmp/rdma_files_local");
-        File rdmaTmpFileRemote = new File("/tmp/rdma_files_remote");
+        File rdmaTmpFileLocal = new File("/opt/rdfs/rdma_files_local");
+        File rdmaTmpFileRemote = new File("/opt/rdfs/rdma_files_remote");
 
         BufferedWriter bwLocal = null;
         BufferedWriter bwRemote = null;
@@ -152,7 +152,8 @@ public class RdmaUtil {
                         "rdcpj", "-d", "-c", "/home/lab2/rdcp.cfg" //-c指定RDMA的配置文件
                 });*/
                 Process process = Runtime.getRuntime().exec(new String[]{
-                        "rdcpj", "-d", "-b", "10485760", "-c", RdfsClient.getRemoteRdmaAddress() //-c指定RDMA的配置文件
+//                        "rdcpj", "-d", "-b", "10485760", "-c", RdfsClient.getRemoteRdmaAddress() //-c指定地址
+                        "rdcpj", "-d", "-b", "10485760", "-c", "192.168.100.100"
                 });
 
                 process.waitFor();
@@ -163,12 +164,17 @@ public class RdmaUtil {
                 br.read(rdmaResult);
                 System.out.println(rdmaResult);
             }else {
-                System.out.println("RdmaUtil.uploadDir DEBUG: do not use rdma send files");
+                System.out.println("RdmaUtil.uploadDir() DEBUG: do not use rdma send files");
             }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void send(String ip, String dir, String path) {
+
+
     }
 }

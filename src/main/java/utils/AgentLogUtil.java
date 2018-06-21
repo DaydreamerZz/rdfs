@@ -1,5 +1,7 @@
 package utils;
 
+import core.RdfsConstants;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -26,7 +28,7 @@ public class AgentLogUtil {
             agentDirTree.add(log);
         }
 
-        System.out.println("AgentLogUtil.addAgentDirTree: " + agentDirTree);
+        System.out.println("AgentLogUtil.addAgentDirTree(): " + agentDirTree);
     }
 
     public static void rebuildAgentDirTree(){
@@ -71,6 +73,7 @@ public class AgentLogUtil {
 
         try {
             for(String str : deletedList){
+//                String substring = str.substring(RdfsConstants.NVM_PATH_LENGTH);
                 bwDeleteLog.write(str+"\n");
             }
             bwDeleteLog.flush();
@@ -98,7 +101,9 @@ public class AgentLogUtil {
 
         try {
             for(String str : agentDirTree){
+//                String substring = str.substring(RdfsConstants.NVM_PATH_LENGTH);
                 bwDirTree.write(str+"\n");
+//                bwDirTree.write(str+"\n");
             }
             bwDirTree.flush();
         } catch (IOException e) {
@@ -135,8 +140,12 @@ public class AgentLogUtil {
         try {
             LinkedHashSet<String> agentLogs = AgentLogUtil.getAgentDirTree();
             for (String filePath : filePaths) {
-                if(!agentLogs.contains(filePath))
+                if(!agentLogs.contains(filePath)) {
+//                    bwLog.write(filePath + "\n");
+//                    String substring = filePath.substring(RdfsConstants.NVM_PATH_LENGTH-1);
                     bwLog.write(filePath + "\n");
+                    agentLogs.add(filePath);
+                }
             }
             bwLog.flush();
         } catch (IOException e) {

@@ -1,6 +1,6 @@
 package core;
 
-import msg.ClientToAgentFilesMsg;
+import msg.ClientToAgentMsg;
 import utils.CommandUtil;
 import utils.RdmaUtil;
 import io.netty.bootstrap.Bootstrap;
@@ -73,8 +73,8 @@ public class RdfsClient {
 
 
     public static boolean isDebugRdmaRun() {
-        return DEBUG_RDMA_NOT_RUN;
-//        return DEBUG_RDMA_RUN;
+//        return DEBUG_RDMA_NOT_RUN;
+        return DEBUG_RDMA_RUN;
     }
 
     public static void main(String[] args) {
@@ -118,7 +118,7 @@ public class RdfsClient {
             2. 指令发送给server
 
              */
-            ClientToAgentFilesMsg msg;
+            ClientToAgentMsg msg;
             while (true) {
                 Thread.sleep(500); //没有任何意义,只是为了等待收到消息之后才显示$:
                 System.out.printf("$: ");
@@ -132,14 +132,15 @@ public class RdfsClient {
                         channel.write(fileName);
                     }
                     channel.flush();*/
-                    msg = new ClientToAgentFilesMsg();
+                    msg = new ClientToAgentMsg();
                     /*
                     需要把这次Client传输的文件列表告诉Agent好让Agent更新目录树.
                     这里只能新建立一个ArrayList对象,否则数据还没发送到Agent,fileNames.clear()方法会把数据清空,Agent收到的数据就是空的.fileNames在每次发送完都会清空.
                      */
                     ArrayList<String> sendFileNames = new ArrayList<>();
                     for (String tmp : fileNames) {
-                        sendFileNames.add(tmp);
+                        String substring = tmp.substring(RdfsConstants.NVM_PATH_LENGTH);
+                        sendFileNames.add(substring);
                     }
 //                    Collections.copy(sendFileNames, fileNames);
                     msg.setCommandStr(command);
@@ -149,11 +150,11 @@ public class RdfsClient {
                     channel.writeAndFlush(msg);
                     fileNames.clear();
                 } else if (result == CommandUtil.COMMAND_LIST_OK) {
-                    msg = new ClientToAgentFilesMsg();
+                    msg = new ClientToAgentMsg();
                     msg.setCommandStr(command);
                     channel.writeAndFlush(msg);
                 } else if (result == CommandUtil.COMMAND_DELETT_OK) {
-                    msg = new ClientToAgentFilesMsg();
+                    msg = new ClientToAgentMsg();
                     msg.setCommandStr(command);
                     channel.writeAndFlush(msg);
                 } else if (result == CommandUtil.COMMAND_NULL) {

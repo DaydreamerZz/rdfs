@@ -17,65 +17,50 @@ public class AgentToServerMsg implements Serializable {
      * 默认序列ID
      */
     private static final long serialVersionUID = 1L;
-//    private List<String> availStorages = new ArrayList<>();
-    private String targetStorage;
-    private ArrayList<String> listResults;
+    private String cmd;
+    private String path;
+    private String clientIp;
+    private String clientDir;
 
-    public HashSet<String> getAgentMaintainDirTree() {
-        return agentMaintainDirTree;
+    public String getCmd() {
+        return cmd;
     }
 
-    public void setAgentMaintainDirTree(HashSet<String> agentMaintainDirTree) {
-        this.agentMaintainDirTree = agentMaintainDirTree;
+    public void setCmd(String cmd) {
+        this.cmd = cmd;
     }
 
-    private HashSet<String> agentMaintainDirTree;
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-    public ArrayList<String> getListResults() {
-        return listResults;
+    public String getClientIp() {
+        return clientIp;
     }
 
-    public void setListResults(ArrayList<String> listResults) {
-        this.listResults = listResults;
+    public void setClientIp(String clientIp) {
+        this.clientIp = clientIp;
     }
 
-    public String getTargetStorage() {
-        return targetStorage;
+    public String getClientDir() {
+        return clientDir;
     }
 
-    public void setTargetStorage(String targetStorage) {
-        this.targetStorage = targetStorage;
+    public void setClientDir(String clientDir) {
+        this.clientDir = clientDir;
     }
 
-    /*public List<String> getAvailStorages() {
-        return availStorages;
+    public String getPath() {
+        return path;
     }
-    public void setAvailStorages(List<String> availStorages) {
-        this.availStorages = availStorages;
-    }*/
 
-    /*@Override
-    public String toString() {
-        return "ResponseMsg{" +
-                "availStorages=" + availStorages +
-                ", listResults=" + listResults +
-                '}';
-    }*/
-
-//    public void addAvailStorage(String host){
-//        availStorages.add(host);
-//    }
-
+    public void setPath(String path) {
+        this.path = path;
+    }
 
     @Override
     public String toString() {
-        return "AgentToClientMsg{" +
-                "targetStorage='" + targetStorage + '\'' +
-                ", listResults=" + listResults +
-                ", agentMaintainDirTree=" + agentMaintainDirTree +
+        return "AgentToServerMsg{" +
+                "cmd='" + cmd + '\'' +
+                ", path='" + path + '\'' +
+                ", clientIp='" + clientIp + '\'' +
+                ", clientDir='" + clientDir + '\'' +
                 '}';
     }
 }

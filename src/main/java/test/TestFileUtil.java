@@ -15,11 +15,11 @@ public class TestFileUtil {
     public static void main(String[] args) {
         FileUtil fileUtil = new FileUtil();
 
-//        testTraverseFolder(fileUtil);
+        testTraverseFolder(fileUtil);
 
 //        testBuildLocalFileTree(fileUtil);
 
-        testLogFileSimple(fileUtil);
+//        testLogFileSimple(fileUtil);
         return;
     }
 

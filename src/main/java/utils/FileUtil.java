@@ -20,12 +20,10 @@ public class FileUtil {
     public static final int IS_DIR = 2;
     public static final int _1MB = 1024 * 1024;
 
-
-
-
     /*
     @param filePath
-    用来判断
+    用来判断指定路径的文件是否存在,
+    返回值0:不存在 1:文件 2:目录
      */
     public static int checkValidFilePath(String filePath) {
         File file = new File(filePath);
@@ -50,18 +48,22 @@ public class FileUtil {
 //        int fileNum = 0, folderNum = 0;
         long totalSize = 0;
 
+        if(fileOrDirPath.charAt(fileOrDirPath.length()-1) != '/'){
+            fileOrDirPath += '/';
+        }
+
         File file = new File(fileOrDirPath);
         if(file.isFile()){
             localFiles.add(file.getAbsolutePath());
 //            totalSize += file.getTotalSpace();
             totalSize += file.length();
         }else {
-            if(fileOrDirPath.endsWith("/")){
+            /*if(fileOrDirPath.endsWith("/")){
                 localDirs.add(fileOrDirPath);
 //                fileOrDirPath = fileOrDirPath.substring(0, fileOrDirPath.length()-1);
             }else{
                 localDirs.add(fileOrDirPath + "/");
-            }
+            }*/
 
             LinkedList<File> list = new LinkedList<File>();
             File[] files = file.listFiles();
@@ -98,14 +100,14 @@ public class FileUtil {
         }
 
         if(localDirs.size() == 0){ //说明只有一个文件,处理好文件路径就可以了
-            String localPath = localFiles.get(0);
-            int splitIndex = localPath.lastIndexOf('/')+1;
+//            String localPath = localFiles.get(0);
+            int splitIndex = fileOrDirPath.lastIndexOf('/')+1;
             /*String substring = localPath.substring(localPath.lastIndexOf('/')+1);
             remoteFiles.add(remoteTargetDirPath + substring);*/
-            remoteFiles.add(parsePath(localPath, remoteTargetDirPath, splitIndex));
+            remoteFiles.add(parsePath(fileOrDirPath, remoteTargetDirPath, splitIndex));
         }else{ //此时要对目录下所有文件和目录的地址进行转换
-            String localPath = localDirs.get(0);
-            int splitIndex = localPath.lastIndexOf('/')+1;
+//            String localPath = localDirs.get(0);
+            int splitIndex = fileOrDirPath.length();
             for(String localDir : localDirs){
                 remoteDirs.add(parsePath(localDir, remoteTargetDirPath, splitIndex));
             }
