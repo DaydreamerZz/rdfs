@@ -2,6 +2,8 @@ package utils;
 
 import core.RdfsClient;
 
+import static core.RdfsConstants.*;
+
 /**
  * @author : Bruce Zhao
  * @email : zhzh402@163.com
@@ -10,19 +12,7 @@ import core.RdfsClient;
  */
 public class CommandUtil {
 
-    public static final int COMMAND_NULL = 0;
-    public static final int COMMAND_ILLEGAL = 1;
-    public static final int COMMAND_OK = 2;
-    public static final int COMMAND_UNSUPPORTED = 3;
-    public static final int COMMAND_UNKNOWN = 4;
-    public static final int COMMAND_UPLOAD_OK = 5;
-    public static final int COMMAND_LIST_OK = 6;
-    public static final int COMMAND_DELETT_OK = 7;
 
-    public static final String COMMAND_UPLOAD = "upload";
-    public static final String COMMAND_DOWNLOAD = "download";
-    public static final String COMMAND_DELETE = "delete";
-    public static final String COMMAND_LIST = "list";
 
 //    public static final String REMOTE_TARGET_DIR = "/mnt/nvm/";
 
@@ -39,7 +29,7 @@ public class CommandUtil {
             return COMMAND_LIST_OK;
         } else{
             switch (split[0].toLowerCase()){
-                case COMMAND_UPLOAD:
+                case COMMAND_PUT:
                     int fileCheckResult = FileUtil.checkValidFilePath(split[1]);
                     if(fileCheckResult == FileUtil.IS_FILE){ //检查文件路径是否存在,并且可读,确保文件存在
                         System.out.println("CommandUtil.parseStrCommand: send one file");
@@ -61,9 +51,9 @@ public class CommandUtil {
                     }else {
                         return COMMAND_ILLEGAL; //非法指令,指令参数有误,找不到文件
                     }
-                case COMMAND_DOWNLOAD:
+                case COMMAND_GET:
                     return COMMAND_UNSUPPORTED;
-                case COMMAND_DELETE:
+                case COMMAND_RM:
                     return COMMAND_DELETT_OK;
                 default:
                     return COMMAND_UNKNOWN;

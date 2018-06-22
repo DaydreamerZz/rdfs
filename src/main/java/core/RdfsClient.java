@@ -14,6 +14,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import static core.RdfsConstants.*;
+
 /**
  * @author : Bruce Zhao
  * @email : zhzh402@163.com
@@ -124,7 +126,7 @@ public class RdfsClient {
                 System.out.printf("$: ");
                 command = in.readLine();
                 int result = CommandUtil.parseStrCommand(command);
-                if (result == CommandUtil.COMMAND_UPLOAD_OK) { //到这里,文件已经被传输到远程了
+                if (result == COMMAND_UPLOAD_OK) { //到这里,文件已经被传输到远程了
 //                    channel.writeAndFlush(command + "\n");
                     ArrayList<String> fileNames = RdmaUtil.getFilePaths();
                     /*for(String fileName : fileNames){
@@ -149,21 +151,21 @@ public class RdfsClient {
                     System.out.println("RdfsClient in connect() before send: " + msg);
                     channel.writeAndFlush(msg);
                     fileNames.clear();
-                } else if (result == CommandUtil.COMMAND_LIST_OK) {
+                } else if (result == COMMAND_LIST_OK) {
                     msg = new ClientToAgentMsg();
                     msg.setCommandStr(command);
                     channel.writeAndFlush(msg);
-                } else if (result == CommandUtil.COMMAND_DELETT_OK) {
+                } else if (result == COMMAND_DELETT_OK) {
                     msg = new ClientToAgentMsg();
                     msg.setCommandStr(command);
                     channel.writeAndFlush(msg);
-                } else if (result == CommandUtil.COMMAND_NULL) {
+                } else if (result == COMMAND_NULL) {
                     System.out.println("Command can not be empty");
-                } else if (result == CommandUtil.COMMAND_UNSUPPORTED) {
+                } else if (result == COMMAND_UNSUPPORTED) {
                     System.out.println("Command: " + command + " not supported");
-                } else if (result == CommandUtil.COMMAND_UNKNOWN) {
+                } else if (result == COMMAND_UNKNOWN) {
                     System.out.println("Command: " + command + " unknown");
-                } else if (result == CommandUtil.COMMAND_ILLEGAL) {
+                } else if (result == COMMAND_ILLEGAL) {
                     System.out.println("Command: " + command + " illegal");
                 }
 

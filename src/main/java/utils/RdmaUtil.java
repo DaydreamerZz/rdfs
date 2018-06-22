@@ -97,6 +97,12 @@ public class RdmaUtil {
         ArrayList<String> remoteDirs = new ArrayList<>();
         ArrayList<String> remoteFiles = new ArrayList<>();
 
+
+
+
+
+
+
         totolSize = FileUtil.traverseFolder(fileOrDirPath, remoteTargetDirPath, localDirs, localFiles, remoteDirs, remoteFiles);//得到所有本地文件路径,划分目录和文件
 
         //为了发送给Agent发送的文件列表

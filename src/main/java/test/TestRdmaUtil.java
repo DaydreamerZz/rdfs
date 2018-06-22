@@ -2,6 +2,7 @@ package test;
 
 
 import core.RdfsClient;
+import core.RdfsConstants;
 import utils.RdmaUtil;
 
 /**
@@ -13,9 +14,9 @@ import utils.RdmaUtil;
 public class TestRdmaUtil {
 
     public static void main(String[] args) {
-        RdmaUtil.tmpFileUpdate("/home/lab2/files/", RdfsClient.getRemoteRdmaDirectory());
+        RdmaUtil.tmpFileUpdate("/home/lab2/files2/", RdfsConstants.NVM_PATH);
 
-        RdmaUtil.uploadDir("/home/lab2/files/");
+        RdmaUtil.uploadDir("/home/lab2/files2/");
 
         //RdmaUtil.uploadFile("/home/lab2/files/1", "/tmp/files");
         return;

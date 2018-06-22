@@ -1,5 +1,6 @@
 package utils;
 
+import core.RdfsConstants;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -142,7 +143,35 @@ public class ServerFileCheck {
 
     }
 
+    //todo
+    //这里假设从Agent传过来的path是已经验证的,也就是,比如Client要求rm dir1,那么Agent要验证dir1是存在的,那么dir1也可能是目录或者是文件
+    //目前Agent并没有做
+    /*
+     * type用来标记path是一个文件还是目录, true: 文件, false: 目录
+     */
     public static void remove(String path) {
+        System.out.println("ServerFileCheck.remove(): " + path);
+        String realPath = RdfsConstants.NVM_PATH + path;
+        File file;
+        file = new File(realPath);
+        if(!file.exists()){ //说明文件被移动了磁盘
+            realPath = RdfsConstants.NVM_BACKUP_PATH + path;
+            file = new File(realPath);
+            if(!file.exists()){
+                return;
+            }
+        }
+
+        try {
+            if (file.isDirectory()) {
+                FileUtils.deleteDirectory(file);
+            }else{
+                FileUtils.deleteQuietly(file);
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
 
     }
 }

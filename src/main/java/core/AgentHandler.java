@@ -16,6 +16,10 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 
 import java.util.*;
 
+import static core.RdfsConstants.COMMAND_LIST;
+import static core.RdfsConstants.COMMAND_PUT;
+import static core.RdfsConstants.COMMAND_RM;
+
 /**
  * @author : Bruce Zhao
  * @email  : zhzh402@163.com
@@ -72,11 +76,11 @@ public class  AgentHandler extends ChannelInboundHandlerAdapter {
             String commandStr = clientToAgentMsg.getCommandStr();
             AgentToClientMsg agentToClientMsg = new AgentToClientMsg();
 
-            if (commandStr.startsWith("upload")) {  //对于Client的upload操作, Client会把上传的文件名告诉Agent, Agent以此写入日志文件即可
+            if (commandStr.startsWith(COMMAND_PUT)) {  //对于Client的PUT操作, Client会把上传的文件名告诉Agent, Agent以此写入日志文件即可
                 AgentLogUtil.logFileSimple(filePaths); //传入的文件不仅放在内存中,还写入本地文件作为备份
                 agentToClientMsg.setAgentMaintainDirTree(AgentLogUtil.getAgentDirTree()); //返回给Client最新的Agent目录树结构
 
-            } else if (commandStr.startsWith("list")) {  //Agent执行list指令,返回结果给client(为什么不查Client本地缓存的目录树??)
+            } else if (commandStr.startsWith(COMMAND_LIST)) {  //Agent执行LIST指令,返回结果给client(为什么不查Client本地缓存的目录树??)
                 String[] split = clientToAgentMsg.getCommandStr().split(" ");
                 ArrayList<String> listResult = new ArrayList<>();
                 Iterator<String> iterator = AgentLogUtil.getAgentDirTree().iterator();
@@ -108,7 +112,7 @@ public class  AgentHandler extends ChannelInboundHandlerAdapter {
                 System.out.println("AgentHandler.channelRead() 发送list结果给client: \n" + agentToClientMsg);
 
 //            ctx.writeAndFlush(responseMsg);
-            } else if (commandStr.startsWith("delete")) { //只要修改目录树信息就可以了,同时要记录日志
+            } else if (commandStr.startsWith(COMMAND_RM)) { //只要修改目录树信息就可以了,同时要记录日志
                 String[] split = clientToAgentMsg.getCommandStr().split(" ");
                 String removeTarget = split[1];
 
@@ -131,7 +135,7 @@ public class  AgentHandler extends ChannelInboundHandlerAdapter {
                 //接下来,通知Server删除文件
 
                 AgentToServerMsg agentToServerMsg = new AgentToServerMsg();
-                agentToServerMsg.setCmd("delete");
+                agentToServerMsg.setCmd(COMMAND_RM);
                 agentToServerMsg.setPath(removeTarget);
                 for(Channel server : servers){
                     server.writeAndFlush(agentToServerMsg);

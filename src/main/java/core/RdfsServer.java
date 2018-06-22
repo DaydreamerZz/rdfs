@@ -5,6 +5,8 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import utils.ServerFileCheck;
+import utils.ServerFileThread;
 
 /**
  * @author : Bruce Zhao
@@ -57,6 +59,9 @@ public class RdfsServer {
 
             future = bootstrap.connect(host, port).sync();
             Channel channel = future.channel();
+
+            Thread thread = new Thread(new ServerFileThread());
+            thread.start();
 
 
         } finally {

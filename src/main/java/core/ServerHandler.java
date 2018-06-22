@@ -9,6 +9,9 @@ import msg.ServerToAgentMsg;
 import utils.RdmaUtil;
 import utils.ServerFileCheck;
 
+import static core.RdfsConstants.COMMAND_GET;
+import static core.RdfsConstants.COMMAND_RM;
+
 /**
  * @author : Bruce Zhao
  * @email : zhzh402@163.com
@@ -18,9 +21,9 @@ import utils.ServerFileCheck;
 public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        ServerToAgentMsg msg = new ServerToAgentMsg();
+        /*ServerToAgentMsg msg = new ServerToAgentMsg();
         msg.setIp("locahost");
-        ctx.writeAndFlush(msg);
+        ctx.writeAndFlush(msg);*/
     }
 
     @Override
@@ -29,11 +32,11 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         if(msg instanceof  AgentToServerMsg) {
             AgentToServerMsg agentToServerMsg = (AgentToServerMsg) msg;
             String cmd = agentToServerMsg.getCmd();
-            if("delete".equalsIgnoreCase(cmd)){
+            if(COMMAND_RM.equals(cmd)){
                 String path = agentToServerMsg.getPath();
                 ServerFileCheck.remove(path);
 
-            }else if("get".equalsIgnoreCase(cmd)){
+            }else if(COMMAND_GET.equals(cmd)){
                 String path = agentToServerMsg.getPath();
                 String ip = agentToServerMsg.getClientIp();
                 String dir = agentToServerMsg.getClientDir();
