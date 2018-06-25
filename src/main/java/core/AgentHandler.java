@@ -57,10 +57,10 @@ public class  AgentHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
-        if (msg instanceof ServerToAgentMsg) {
+        if (msg instanceof ServerToAgentMsg) { //Agent收到Server的消息,返回Server消息
             AgentToServerMsg agentToServerMsg = new AgentToServerMsg();
             agentToServerMsg.setClientIp("localhost");
-            agentToServerMsg.setClientDir("/mnt/nvm/");
+            agentToServerMsg.setClientDir(RdfsConstants.NVM_PATH);
             agentToServerMsg.setCmd("null");
             ctx.writeAndFlush(agentToServerMsg);
         }else{

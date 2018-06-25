@@ -32,7 +32,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         if(msg instanceof  AgentToServerMsg) {
             AgentToServerMsg agentToServerMsg = (AgentToServerMsg) msg;
             String cmd = agentToServerMsg.getCmd();
-            if(COMMAND_RM.equals(cmd)){
+            if(COMMAND_RM.equals(cmd)){ //todo 删除的时候采用的是starwith,不可行.同时,还有需要验证没有做.
                 String path = agentToServerMsg.getPath();
                 ServerFileCheck.remove(path);
 

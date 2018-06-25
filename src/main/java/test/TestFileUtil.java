@@ -44,7 +44,7 @@ public class TestFileUtil {
         System.out.println(remoteFiles);
     }
 
-    public static void testBuildLocalFileTree(FileUtil fileUtil){
+    /*public static void testBuildLocalFileTree(FileUtil fileUtil){
         ArrayList<String> filePaths = new ArrayList<>();
 
         filePaths.add("/mnt/nvm/");filePaths.add("/mnt/nvm/dir1/");
@@ -68,5 +68,5 @@ public class TestFileUtil {
         filePaths.add("/mnt/nvm/dir1/a");filePaths.add("/mnt/nvm/dir1/dir11/file2");
 
         fileUtil.logFileSimple(filePaths);
-    }
+    }*/
 }

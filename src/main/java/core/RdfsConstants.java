@@ -7,7 +7,7 @@ package core;
  * @desc :
  */
 public class RdfsConstants {
-    public static final String NVM_PATH = "/mnt/nvm/";
+    public static final String NVM_PATH = "/mnt/dram/";
     public static final String NVM_BACKUP_PATH = "/mnt/backup/";
 
     public static final int NVM_PATH_LENGTH = NVM_PATH.length();
@@ -23,6 +23,8 @@ public class RdfsConstants {
     public static final int COMMAND_DELETT_OK = 7;
     public static final int COMMAND_GET_OK = 8;
     public static final int COMMAND_HELP_OK = 9;
+    public static final int COMMAND_EXIT_OK = 10;
+
 
 
     public static final String COMMAND_PUT = "put";
@@ -43,4 +45,9 @@ public class RdfsConstants {
 
 
     public static final String DEFAULT_DEBUG_IP = "192.168.100.110";
+
+
+    public static final long NVM_MAX_SIZE = 2147483648L;   //默认内存文件系统的最大大小为2G
+    public static final long NVM_LIMIT_SIZE = 1073741824L; //默认内存文件系统开始同步的大小
+//    public static final long NVM_LIMIT_SIZE = 1024*1024*100; //默认内存文件系统开始同步的大小
 }

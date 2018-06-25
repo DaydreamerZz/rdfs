@@ -21,6 +21,8 @@ public class CommandUtil {
         if("help".equalsIgnoreCase(strCommand)) {
             usage();
             return COMMAND_HELP_OK;
+        }else if("exit".equalsIgnoreCase(strCommand)){
+            return COMMAND_EXIT_OK;
         }
 
         if(strCommand == null || strCommand.length() == 0) //空指令，直接返回

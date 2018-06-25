@@ -4,6 +4,9 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 
+import static core.RdfsConstants.NVM_LIMIT_SIZE;
+import static core.RdfsConstants.NVM_PATH;
+
 /**
  * @author : Bruce Zhao
  * @email : zhzh402@163.com
@@ -13,7 +16,7 @@ import java.io.File;
 public class ServerFileThread implements Runnable {
     @Override
     public void run() {
-        File file = new File(ServerFileCheck.NVM_PATH);
+        File file = new File(NVM_PATH);
         long previousSize = 0, currentSize;
         while (true) {
             currentSize = FileUtils.sizeOfDirectory(file);
@@ -21,7 +24,7 @@ public class ServerFileThread implements Runnable {
                 previousSize = currentSize;
                 ServerFileCheck.traverseFolder();  //因为目录大小变化了,所以要重新遍历目录,从而得到最新的目录文件结构
 
-                if (currentSize > ServerFileCheck.NVM_LIMIT_SIZE) {
+                if (currentSize > NVM_LIMIT_SIZE) {
                     System.out.println("more than limit");
                     ServerFileCheck.nvmWriteToDisk();
                 } else {

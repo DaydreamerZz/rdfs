@@ -7,6 +7,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import static core.RdfsConstants.NVM_BACKUP_PATH;
+import static core.RdfsConstants.NVM_LIMIT_SIZE;
+import static core.RdfsConstants.NVM_PATH;
+
 
 /**
  * @author : Bruce Zhao
@@ -16,12 +20,7 @@ import java.util.LinkedList;
  */
 public class ServerFileCheck {
 
-    public static final String NVM_PATH = "/mnt/nvm";
-    public static final String NVM_BACKUP_PATH = "/mnt/backup/";
-//    public static final String NVM_PATH = "/home/lab2/files3/";
-    public static final long NVM_MAX_SIZE = 2147483648L;   //默认内存文件系统的最大大小为2G
-    public static final long NVM_LIMIT_SIZE = 1073741824L; //默认内存文件系统开始同步的大小
-//    public static final long NVM_LIMIT_SIZE = 1024*1024*100; //默认内存文件系统开始同步的大小
+
     public static LinkedList<String> nvmFilesList = new LinkedList<>();
 
     /*
@@ -104,11 +103,11 @@ public class ServerFileCheck {
      * 当检查到NVM中文件总大小超过了设定值,写入部分文件到磁盘中去
      */
     public static void nvmWriteToDisk() {
-        File file = new File(ServerFileCheck.NVM_PATH);
+        File file = new File(NVM_PATH);
         String srcFileName, targetFileName;
         File srcFile, targetFile;
         while(true){
-            if(FileUtils.sizeOfDirectory(file) > ServerFileCheck.NVM_LIMIT_SIZE){
+            if(FileUtils.sizeOfDirectory(file) > NVM_LIMIT_SIZE){
                 try {
                     srcFileName = nvmFilesList.getFirst();
                     nvmFilesList.removeFirst();
@@ -144,11 +143,11 @@ public class ServerFileCheck {
      */
     public static void remove(String path) {
         System.out.println("ServerFileCheck.remove(): " + path);
-        String realPath = RdfsConstants.NVM_PATH + path;
+        String realPath = NVM_PATH + path;
         File file;
         file = new File(realPath);
         if(!file.exists()){ //说明文件被移动了磁盘
-            realPath = RdfsConstants.NVM_BACKUP_PATH + path;
+            realPath = NVM_BACKUP_PATH + path;
             file = new File(realPath);
             if(!file.exists()){
                 return;
