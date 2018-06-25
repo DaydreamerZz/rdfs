@@ -13,12 +13,11 @@ import utils.AgentLogUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import utils.RdmaUtil;
 
 import java.util.*;
 
-import static core.RdfsConstants.COMMAND_LIST;
-import static core.RdfsConstants.COMMAND_PUT;
-import static core.RdfsConstants.COMMAND_RM;
+import static core.RdfsConstants.*;
 
 /**
  * @author : Bruce Zhao
@@ -77,11 +76,24 @@ public class  AgentHandler extends ChannelInboundHandlerAdapter {
             AgentToClientMsg agentToClientMsg = new AgentToClientMsg();
 
             if (commandStr.startsWith(COMMAND_PUT)) {  //对于Client的PUT操作, Client会把上传的文件名告诉Agent, Agent以此写入日志文件即可
+
+                //todo 修改日志实现
+                AgentLogUtil.appendPutLog(filePaths);
+
                 AgentLogUtil.logFileSimple(filePaths); //传入的文件不仅放在内存中,还写入本地文件作为备份
                 agentToClientMsg.setAgentMaintainDirTree(AgentLogUtil.getAgentDirTree()); //返回给Client最新的Agent目录树结构
 
+            } else if(commandStr.startsWith(COMMAND_GET)){
+                //get f9 /home/lab2/files/
+                String clientIp = clientToAgentMsg.getRemoteRdmaAddress();
+                String clientDir, path;
+                String[] split = commandStr.split(" ");
+                clientDir = split[2];
+                path = split[1];
+                RdmaUtil.send(clientIp, clientDir, path);
+
             } else if (commandStr.startsWith(COMMAND_LIST)) {  //Agent执行LIST指令,返回结果给client(为什么不查Client本地缓存的目录树??)
-                String[] split = clientToAgentMsg.getCommandStr().split(" ");
+                String[] split = commandStr.split(" ");
                 ArrayList<String> listResult = new ArrayList<>();
                 Iterator<String> iterator = AgentLogUtil.getAgentDirTree().iterator();
                 if (split.length == 1) { //只有一个list指令,那么返回一级目录就可以了
@@ -144,8 +156,6 @@ public class  AgentHandler extends ChannelInboundHandlerAdapter {
             ctx.writeAndFlush(agentToClientMsg);
             System.out.println("AgentHandler.channelRead() response client: " + agentToClientMsg);
         }
-
-
     }
 
 

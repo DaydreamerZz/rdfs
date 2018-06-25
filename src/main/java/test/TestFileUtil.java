@@ -20,6 +20,10 @@ public class TestFileUtil {
 //        testBuildLocalFileTree(fileUtil);
 
 //        testLogFileSimple(fileUtil);
+
+
+        /*int res = FileUtil.checkFilePath("/mnt/nvm/dir1");
+        System.out.println(res);*/
         return;
     }
 
@@ -30,7 +34,8 @@ public class TestFileUtil {
         ArrayList<String> remoteDirs = new ArrayList<>();
         ArrayList<String> remoteFiles = new ArrayList<>();
 
-        fileUtil.traverseFolder("/home/lab2/files/", "/mnt/nvm", localDirs, localFiles, remoteDirs, remoteFiles);
+//        fileUtil.traverseFolder("/home/lab2/files/", "/mnt/nvm", localDirs, localFiles, remoteDirs, remoteFiles);
+        fileUtil.traverseFolder("/mnt/nvm/", "/home/lab2/files/", localDirs, localFiles, remoteDirs, remoteFiles);
 //        fileUtil.traverseFolder("/home/lab2/files/1", "/home/lab1/", localDirs, localFiles, remoteDirs, remoteFiles);
         System.out.println(localDirs);
         System.out.println(localFiles);

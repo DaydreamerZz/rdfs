@@ -52,6 +52,8 @@ public class RdfsClient {
     }
 
     public static String getRemoteRdmaAddress() {
+        if(remoteRdmaAddress == null)
+            return RdfsConstants.DEFAULT_DEBUG_IP;
         return remoteRdmaAddress;
     }
 
@@ -159,6 +161,28 @@ public class RdfsClient {
                     msg = new ClientToAgentMsg();
                     msg.setCommandStr(command);
                     channel.writeAndFlush(msg);
+                } else if(result == COMMAND_GET_OK){
+//                    System.out.println("");
+                    String tmp, remotePath, localPath;
+                    String[] split = command.split(" ");
+                    tmp = split[1];
+                    if("-f".equalsIgnoreCase(tmp)){ //有-f选项,无需判断目录是否存在,但是还是需要确定是否有权限创建目录
+                        remotePath = split[2];
+                        localPath = split[3];
+                    }else{
+                        remotePath = split[1];
+                        localPath = split[2];
+                    }
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("get ");
+                    sb.append(remotePath + " ");
+                    sb.append(localPath);
+
+                    msg = new ClientToAgentMsg();
+                    msg.setCommandStr(sb.toString());
+                    msg.setRemoteRdmaAddress("192.168.100.110");
+                    channel.writeAndFlush(msg);
+
                 } else if (result == COMMAND_NULL) {
                     System.out.println("Command can not be empty");
                 } else if (result == COMMAND_UNSUPPORTED) {

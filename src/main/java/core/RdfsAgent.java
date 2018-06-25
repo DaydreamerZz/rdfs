@@ -20,6 +20,16 @@ import io.netty.handler.logging.LoggingHandler;
  */
 public class RdfsAgent {
 
+    public static boolean syncFlag = false;
+
+    public static boolean isSyncFlag() {
+        return syncFlag;
+    }
+
+    public static void setSyncFlag(boolean syncFlag) {
+        RdfsAgent.syncFlag = syncFlag;
+    }
+
     public static void main(String[] args) throws Exception {
         int port = 8080;
         /*
@@ -29,7 +39,7 @@ public class RdfsAgent {
         Storage.add("192.168.100.110");
 
         //根据文件,重建agent维护的目录树结构
-        AgentLogUtil.rebuildAgentDirTree();
+        AgentLogUtil.initAgentDirTree();
 
 
         new RdfsAgent().bind(port);

@@ -14,11 +14,12 @@ import utils.RdmaUtil;
 public class TestRdmaUtil {
 
     public static void main(String[] args) {
-        RdmaUtil.tmpFileUpdate("/home/lab2/files2/", RdfsConstants.NVM_PATH);
+//        RdmaUtil.clientTmpFileUpdate("/home/lab2/files2/", RdfsConstants.NVM_PATH);
 
-        RdmaUtil.uploadDir("/home/lab2/files2/");
+//        RdmaUtil.uploadDir("/home/lab2/files2/");
 
-        //RdmaUtil.uploadFile("/home/lab2/files/1", "/tmp/files");
+        RdmaUtil.send("192.168.100.110", "/home/lab2/files/", "d1");
+
         return;
     }
 }

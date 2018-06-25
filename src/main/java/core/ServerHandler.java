@@ -38,9 +38,9 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
             }else if(COMMAND_GET.equals(cmd)){
                 String path = agentToServerMsg.getPath();
-                String ip = agentToServerMsg.getClientIp();
-                String dir = agentToServerMsg.getClientDir();
-                RdmaUtil.send(ip, dir, path);
+                String clientIp = agentToServerMsg.getClientIp();
+                String clientDir = agentToServerMsg.getClientDir();
+                RdmaUtil.send(clientIp, clientDir, path);
             }
 
             System.out.println(msg.toString());

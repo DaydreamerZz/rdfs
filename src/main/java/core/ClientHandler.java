@@ -31,7 +31,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
                 RdfsClient.setAgentDirTreeDup(agentToClientMsg.getAgentMaintainDirTree());
                 System.out.println("Receive server response: " + agentToClientMsg);
 //            System.out.println("current local dir tree: " + RdfsClient.getAgentDirTreeDup());
-                System.out.println("current local dir tree: " + FileUtil.formatDirTree(RdfsClient.getAgentDirTreeDup()));
+//                System.out.println("current local dir tree: " + FileUtil.formatDirTree(RdfsClient.getAgentDirTreeDup()));
 
             } else { //这里主要是list命令的返回结果
                 System.out.println("Receive server response: " + agentToClientMsg.getListResults());

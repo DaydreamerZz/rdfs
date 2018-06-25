@@ -20,24 +20,17 @@ public class AgentLogUtil {
         return agentDirTree;
     }
 
-    public void addAgentDirTree(ArrayList<String> logs){
-        for(String log : logs){
-            /*if(!agentDirTree.contains(log)){
-                agentDirTree.add(log);
-            }*/
-            agentDirTree.add(log);
-        }
 
-        System.out.println("AgentLogUtil.addAgentDirTree(): " + agentDirTree);
-    }
-
-    public static void rebuildAgentDirTree(){
+    /*
+     * Agent初始化的时候,
+     */
+    public static void initAgentDirTree(){
         if(agentDirTree.size() != 0)
             return;
         BufferedReader brLog = null;
 
         try {
-            brLog = new BufferedReader(new FileReader("/opt/rdfs/rdma_dirtree_log_file"));
+            brLog = new BufferedReader(new FileReader(RdfsConstants.RDMA_DIRTREE_LOG_FILE));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -57,8 +50,16 @@ public class AgentLogUtil {
             }
         }
 
-        System.out.println("AgentLogUtil.rebuildAgentDirTree rebuild agent's log structure: \n" + agentDirTree);
+        System.out.println("AgentLogUtil.initAgentDirTree rebuild agent's log structure: \n" + agentDirTree);
     }
+
+    public static void appendPutLog(ArrayList<String> filePaths) {
+
+        for(String path : filePaths){
+            agentDirTree.add(path);
+        }
+    }
+
 
     public static void appendDeleteLog(ArrayList<String> deletedList) {
         BufferedWriter bwDeleteLog = null;

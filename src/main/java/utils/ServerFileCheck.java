@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
-import static utils.FileUtil._1MB;
 
 /**
  * @author : Bruce Zhao
@@ -21,8 +20,8 @@ public class ServerFileCheck {
     public static final String NVM_BACKUP_PATH = "/mnt/backup/";
 //    public static final String NVM_PATH = "/home/lab2/files3/";
     public static final long NVM_MAX_SIZE = 2147483648L;   //默认内存文件系统的最大大小为2G
-//    public static final long NVM_LIMIT_SIZE = 1073741824L; //默认内存文件系统开始同步的大小
-    public static final long NVM_LIMIT_SIZE = 1024*1024*100; //默认内存文件系统开始同步的大小
+    public static final long NVM_LIMIT_SIZE = 1073741824L; //默认内存文件系统开始同步的大小
+//    public static final long NVM_LIMIT_SIZE = 1024*1024*100; //默认内存文件系统开始同步的大小
     public static LinkedList<String> nvmFilesList = new LinkedList<>();
 
     /*
@@ -59,12 +58,6 @@ public class ServerFileCheck {
         }
     }
 
-
-
-    public static void main(String[] args) {
-
-        return;
-    }
 
     public static long traverseFolder() {
         if(nvmFilesList.size() != 0){ //如果之前有数据,需要清空原始的数据

@@ -13,7 +13,7 @@ public class TestAgentLogUtil {
 
     public static void main(String[] args) {
         AgentLogUtil agentLogUtil = new AgentLogUtil();
-        agentLogUtil.rebuildAgentDirTree();
+        agentLogUtil.initAgentDirTree();
         return;
     }
 }

@@ -21,9 +21,24 @@ public class RdfsConstants {
     public static final int COMMAND_UPLOAD_OK = 5;
     public static final int COMMAND_LIST_OK = 6;
     public static final int COMMAND_DELETT_OK = 7;
+    public static final int COMMAND_GET_OK = 8;
 
     public static final String COMMAND_PUT = "put";
     public static final String COMMAND_GET = "get";
     public static final String COMMAND_RM = "rm";
     public static final String COMMAND_LIST = "list";
+
+    public static final int _1MB = 1024 * 1024;
+
+
+    public static final String RDMA_LOCAL = "/opt/rdfs/rdma_files_local";
+    public static final String RDMA_REMOTE = "/opt/rdfs/rdma_files_remote";
+    public static final String RDMA_DEBUG_LOCAL = "/opt/rdfs/server_local";
+    public static final String RDMA_DEBUG_REMOTE = "/opt/rdfs/server_remote";
+    public static final String RDMA_DIRTREE_LOG_FILE = "/opt/rdfs/rdma_dirtree_log_file";
+
+
+
+
+    public static final String DEFAULT_DEBUG_IP = "192.168.100.110";
 }
