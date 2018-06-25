@@ -183,6 +183,8 @@ public class RdfsClient {
                     msg.setRemoteRdmaAddress("192.168.100.110");
                     channel.writeAndFlush(msg);
 
+                } else if(result == COMMAND_HELP_OK){
+
                 } else if (result == COMMAND_NULL) {
                     System.out.println("Command can not be empty");
                 } else if (result == COMMAND_UNSUPPORTED) {

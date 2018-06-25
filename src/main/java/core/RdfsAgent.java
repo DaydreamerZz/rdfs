@@ -1,5 +1,6 @@
 package core;
 
+import utils.AgentLogThread;
 import utils.AgentLogUtil;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -22,7 +23,7 @@ public class RdfsAgent {
 
     public static boolean syncFlag = false;
 
-    public static boolean isSyncFlag() {
+    public static boolean getSyncFlag() {
         return syncFlag;
     }
 
@@ -59,8 +60,15 @@ public class RdfsAgent {
 
             ChannelFuture future = bootstrap.bind(port).sync();
 
+            Thread thread = new Thread(new AgentLogThread());
+            thread.start();
+
             future.channel().closeFuture().sync();
+
         }finally {
+            //关闭的时候同步日志到文件
+            AgentLogUtil.logSync();
+
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }

@@ -1,7 +1,6 @@
 package utils;
 
 import core.RdfsClient;
-import org.apache.commons.io.FileUtils;
 
 import static core.RdfsConstants.*;
 
@@ -18,6 +17,11 @@ public class CommandUtil {
 //    public static final String REMOTE_TARGET_DIR = "/mnt/nvm/";
 
     public static int parseStrCommand(String strCommand){
+
+        if("help".equalsIgnoreCase(strCommand)) {
+            usage();
+            return COMMAND_HELP_OK;
+        }
 
         if(strCommand == null || strCommand.length() == 0) //空指令，直接返回
             return COMMAND_NULL;
@@ -67,12 +71,15 @@ public class CommandUtil {
                     if(isF){ // -f
                         if(FileUtil.IS_CREATE_FAIL == res){
                             System.out.println("无权限创建下载目录");
+                            return COMMAND_ILLEGAL;
                         }
                     } else{
                         if(FileUtil.IS_EXIST == res){
                             System.out.println("目标目录已经存在, 使用-f选项可以覆盖当前已有目录");
+                            return COMMAND_ILLEGAL;
                         } else if(FileUtil.IS_CREATE_FAIL == res){
                             System.out.println("无权限创建下载目录");
+                            return COMMAND_ILLEGAL;
                         }
                     }
 
@@ -83,5 +90,16 @@ public class CommandUtil {
                     return COMMAND_UNKNOWN;
             }
         }
+    }
+
+//    @Test
+    public static void usage() {
+        System.out.println("RDFS: RDMA Distributed File System");
+        System.out.println("Usage: command [generic options]");
+        String usage = "\tput local_path remote_path\n" +
+                "\tget remote_path localpath\n" +
+                "\tlist path\n" +
+                "\trm path\n";
+        System.out.println(usage);
     }
 }

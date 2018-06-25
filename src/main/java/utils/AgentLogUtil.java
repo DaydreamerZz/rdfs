@@ -4,6 +4,7 @@ import core.RdfsConstants;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 
 /**
@@ -61,7 +62,7 @@ public class AgentLogUtil {
     }
 
 
-    public static void appendDeleteLog(ArrayList<String> deletedList) {
+    /*public static void appendDeleteLog(ArrayList<String> deletedList) {
         BufferedWriter bwDeleteLog = null;
 
         try {
@@ -87,9 +88,9 @@ public class AgentLogUtil {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 
-    public static void rebuildDirTreeLog(LinkedHashSet<String> agentDirTree) {
+    /*public static void rebuildDirTreeLog(LinkedHashSet<String> agentDirTree) {
         BufferedWriter bwDirTree = null;
 
         try {
@@ -116,38 +117,41 @@ public class AgentLogUtil {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 
 
     /*
-    Agent收到client发送的消息(所有传输的文件路径信息)之后,记录到本地的log文件中,重复的不记录
+     * ---Agent收到client发送的消息(所有传输的文件路径信息)之后,记录到本地的log文件中,重复的不记录
+     * 把内存中的目录树结构写入磁盘
      */
-    public static void logFileSimple(ArrayList<String> filePaths) {
-        File rdmaLogFile = new File("/opt/rdfs/rdma_dirtree_log_file");
-        if(!rdmaLogFile.exists()){
+    public static void logSync() {
+        File rdmaLogFile = new File(RdfsConstants.RDMA_DIRTREE_LOG_FILE);
+        /*if(!rdmaLogFile.exists()){
             try {
                 rdmaLogFile.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
         BufferedWriter bwLog = null;
         try {
-            bwLog = new BufferedWriter(new FileWriter(rdmaLogFile, true));
+            bwLog = new BufferedWriter(new FileWriter(rdmaLogFile, false)); //false以为这会覆盖原文件
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        Iterator<String> iterator = agentDirTree.iterator();
         try {
-            LinkedHashSet<String> agentLogs = AgentLogUtil.getAgentDirTree();
+            while(iterator.hasNext()){
+                bwLog.write(iterator.next() + "\n");
+            }
+            /*LinkedHashSet<String> agentLogs = AgentLogUtil.getAgentDirTree();
             for (String filePath : filePaths) {
                 if(!agentLogs.contains(filePath)) {
-//                    bwLog.write(filePath + "\n");
-//                    String substring = filePath.substring(RdfsConstants.NVM_PATH_LENGTH-1);
                     bwLog.write(filePath + "\n");
                     agentLogs.add(filePath);
                 }
-            }
+            }*/
             bwLog.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -159,9 +163,9 @@ public class AgentLogUtil {
             }
         }
 
-        //到这里, 存放到server的文件路径信息都写入了Agent自己的rdma_log_file中,但是为了效率的问题,同时写入一个内存结构,方便查找
+        /*//到这里, 存放到server的文件路径信息都写入了Agent自己的rdma_log_file中,但是为了效率的问题,同时写入一个内存结构,方便查找
         AgentLogUtil agentLogUtil = new AgentLogUtil();
-        agentLogUtil.addAgentDirTree(filePaths);
+        agentLogUtil.addAgentDirTree(filePaths);*/
 
     }
 }

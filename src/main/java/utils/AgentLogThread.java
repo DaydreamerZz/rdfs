@@ -1,5 +1,8 @@
 package utils;
 
+import core.RdfsAgent;
+import core.RdfsConstants;
+import core.RdfsServer;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -14,10 +17,19 @@ public class AgentLogThread implements Runnable {
     @Override
     public void run() {
 
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        while (true){
+            if(RdfsAgent.getSyncFlag()){
+                AgentLogUtil.logSync();
+                RdfsAgent.setSyncFlag(false);
+            }
+            try {
+                System.out.println("Agent日志没有变化,无需同步");
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+
+
     }
 }

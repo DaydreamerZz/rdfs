@@ -22,6 +22,8 @@ public class RdfsConstants {
     public static final int COMMAND_LIST_OK = 6;
     public static final int COMMAND_DELETT_OK = 7;
     public static final int COMMAND_GET_OK = 8;
+    public static final int COMMAND_HELP_OK = 9;
+
 
     public static final String COMMAND_PUT = "put";
     public static final String COMMAND_GET = "get";

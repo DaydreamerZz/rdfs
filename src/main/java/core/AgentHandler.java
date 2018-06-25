@@ -78,9 +78,14 @@ public class  AgentHandler extends ChannelInboundHandlerAdapter {
             if (commandStr.startsWith(COMMAND_PUT)) {  //对于Client的PUT操作, Client会把上传的文件名告诉Agent, Agent以此写入日志文件即可
 
                 //todo 修改日志实现
+                //PUT添加的文件增加到目录树中,未同步到磁盘
                 AgentLogUtil.appendPutLog(filePaths);
 
-                AgentLogUtil.logFileSimple(filePaths); //传入的文件不仅放在内存中,还写入本地文件作为备份
+                //修改目录树标记
+                if(!RdfsAgent.getSyncFlag()) //如果原本就是已修改状态,无需修改状态了
+                    RdfsAgent.setSyncFlag(true);
+
+//                AgentLogUtil.logSync(filePaths); //传入的文件不仅放在内存中,还写入本地文件作为备份
                 agentToClientMsg.setAgentMaintainDirTree(AgentLogUtil.getAgentDirTree()); //返回给Client最新的Agent目录树结构
 
             } else if(commandStr.startsWith(COMMAND_GET)){
@@ -140,8 +145,13 @@ public class  AgentHandler extends ChannelInboundHandlerAdapter {
                     }
                 }
                 agentToClientMsg.setAgentMaintainDirTree(agentDirTree);
-                AgentLogUtil.appendDeleteLog(deletedList);
-                AgentLogUtil.rebuildDirTreeLog(agentDirTree);
+
+                //修改目录树标记
+                if(!RdfsAgent.getSyncFlag()) //如果原本就是已修改状态,无需修改状态了
+                    RdfsAgent.setSyncFlag(true);
+
+//                AgentLogUtil.appendDeleteLog(deletedList);
+//                AgentLogUtil.rebuildDirTreeLog(agentDirTree);
 
                 //以上,Agent的内存目录树以及文件备份都修改完了
                 //接下来,通知Server删除文件

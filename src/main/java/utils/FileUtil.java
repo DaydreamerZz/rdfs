@@ -239,9 +239,9 @@ public class FileUtil {
             }
         }
 
-        //到这里, 存放到server的文件路径信息都写入了Agent自己的rdma_log_file中,但是为了效率的问题,同时写入一个内存结构,方便查找
+        /*//到这里, 存放到server的文件路径信息都写入了Agent自己的rdma_log_file中,但是为了效率的问题,同时写入一个内存结构,方便查找
         AgentLogUtil agentLogUtil = new AgentLogUtil();
-        agentLogUtil.addAgentDirTree(filePaths);
+        agentLogUtil.addAgentDirTree(filePaths);*/
 
     }
 
