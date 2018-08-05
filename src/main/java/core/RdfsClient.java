@@ -77,8 +77,8 @@ public class RdfsClient {
 
 
     public static boolean isDebugRdmaRun() {
-//        return DEBUG_RDMA_NOT_RUN;
-        return DEBUG_RDMA_RUN;
+        return DEBUG_RDMA_NOT_RUN;
+//        return DEBUG_RDMA_RUN;
     }
 
     public static void main(String[] args) {
