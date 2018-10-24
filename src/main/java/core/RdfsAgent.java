@@ -43,10 +43,12 @@ public class RdfsAgent {
         ArrayList<String> servers = new ArrayList<>();
         servers.add("192.168.100.110");
         servers.add("192.168.100.111");
-        HashUtil hashUtil = new HashUtil();
-        hashUtil.init(servers);
+        servers.add("192.168.100.112");
 
-        //根据日志文件,重建agent维护的目录树结构
+//初始化存储节点地址到一致性哈希环
+        new HashUtil().init(servers);
+
+//根据日志文件,重建agent维护的目录树结构
         AgentLogUtil.initAgentDirTree();
 
 
@@ -67,6 +69,7 @@ public class RdfsAgent {
 
             ChannelFuture future = bootstrap.bind(port).sync();
 
+//启动线程检查目录树变化，如果目录树发生的变化，将目录树更新到磁盘文件
             Thread thread = new Thread(new AgentLogThread());
             thread.start();
 

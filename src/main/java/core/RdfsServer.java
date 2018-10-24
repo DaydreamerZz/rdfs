@@ -60,6 +60,7 @@ public class RdfsServer {
             future = bootstrap.connect(host, port).sync();
             Channel channel = future.channel();
 
+//这里是对内存文件系统的监视线程，会检查内存文件系统的大小，将文件持久化到磁盘中
             Thread thread = new Thread(new ServerFileThread());
             thread.start();
 

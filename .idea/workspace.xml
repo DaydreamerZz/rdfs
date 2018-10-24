@@ -2,33 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="66c4a8bc-2b74-4925-929c-d715dc0dc748" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/AgentHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/AgentHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/RdfsClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/RdfsClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/RdfsConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/RdfsConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/test/TestFileUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/test/TestFileUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/test/TestRdmaUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/test/TestRdmaUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/CommandUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/CommandUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/FileUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/FileUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/RdmaUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/RdmaUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/ServerFileCheck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/ServerFileCheck.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/ServerFileThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/ServerFileThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/core/AgentHandler.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/core/ClientHandler.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/core/RdfsAgent$ProtobufDecoderHandler.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/core/RdfsAgent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/core/RdfsClient$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/core/RdfsClient.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/core/RdfsServer$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/core/RdfsServer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/test/TestAgentLogUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/test/TestFileUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/test/TestRdmaUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/utils/AgentLogUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/utils/CommandUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/utils/FileUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/utils/RdmaUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/utils/TimeUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/RdfsAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/RdfsAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/RdfsServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/RdfsServer.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -41,29 +16,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ClientHandler.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/core/ClientHandler.java">
+      <file leaf-file-name="RdfsServer.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/core/RdfsServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+            <state relative-caret-position="464">
+              <caret line="62" column="41" selection-start-line="62" selection-start-column="41" selection-end-line="62" selection-end-column="41" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestFileUtil.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/test/TestFileUtil.java">
+      <file leaf-file-name="AgentHandler.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/core/AgentHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="19" column="40" lean-forward="true" selection-start-line="19" selection-start-column="40" selection-end-line="19" selection-end-column="40" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MarshallingCodeCFactory.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/core/MarshallingCodeCFactory.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="194">
-              <caret line="16" column="14" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
+            <state relative-caret-position="1058">
+              <caret line="67" column="48" lean-forward="true" selection-start-line="67" selection-start-column="48" selection-end-line="67" selection-end-column="48" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -71,20 +37,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RdfsClient.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/core/RdfsClient.java">
+      <file leaf-file-name="RdfsAgent.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/core/RdfsAgent.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="349">
-              <caret line="35" column="70" selection-start-line="35" selection-start-column="70" selection-end-line="35" selection-end-column="70" />
+            <state relative-caret-position="253">
+              <caret line="69" column="63" lean-forward="true" selection-start-line="69" selection-start-column="63" selection-end-line="69" selection-end-column="63" />
+              <folding>
+                <element signature="e#818#819#0" expanded="true" />
+                <element signature="e#849#850#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RdfsConstants.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/core/RdfsConstants.java">
+      <file leaf-file-name="AgentLogUtil.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/utils/AgentLogUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="117">
-              <caret line="9" column="36" lean-forward="true" selection-start-line="9" selection-start-column="36" selection-end-line="9" selection-end-column="36" />
+            <state relative-caret-position="23">
+              <caret line="126" column="23" selection-start-line="126" selection-start-column="23" selection-end-line="126" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -99,7 +69,6 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/utils/Hash.java" />
-        <option value="$PROJECT_DIR$/src/main/java/core/RdfsAgent.java" />
         <option value="$PROJECT_DIR$/src/main/java/utils/HashUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/core/ServerHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/utils/ServerFileCheck.java" />
@@ -111,6 +80,8 @@
         <option value="$PROJECT_DIR$/src/main/java/test/TestRdmaUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/core/AgentHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/core/RdfsClient.java" />
+        <option value="$PROJECT_DIR$/src/main/java/core/RdfsAgent.java" />
+        <option value="$PROJECT_DIR$/src/main/java/core/RdfsServer.java" />
       </list>
     </option>
   </component>
@@ -210,6 +181,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -281,33 +253,32 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1540382069070</updated>
-      <workItem from="1540382070335" duration="1907000" />
+      <workItem from="1540382070335" duration="2495000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1907000" />
+    <option name="totallyTimeSpent" value="2495000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1035" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="6" />
       <window_info anchor="bottom" id="TODO" order="11" />
-      <window_info active="true" anchor="bottom" id="Messages" order="4" sideWeight="0.496788" visible="true" weight="0.26949543" />
+      <window_info anchor="bottom" id="Messages" order="4" sideWeight="0.4962527" weight="0.26949543" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info id="Image Layers" order="5" />
       <window_info anchor="right" id="Capture Analysis" order="0" />
-      <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.503212" side_tool="true" visible="true" weight="0.26949543" />
+      <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.5010707" side_tool="true" visible="true" weight="0.24770643" />
       <window_info anchor="right" x="0" y="0" width="434" height="835" id="Documentation" order="1" side_tool="true" weight="0.32976446" />
       <window_info anchor="right" id="Maven Projects" order="5" />
       <window_info anchor="bottom" id="Database Changes" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Run" order="7" />
       <window_info anchor="bottom" id="Version Control" order="3" />
-      <window_info anchor="bottom" id="Terminal" order="1" sideWeight="0.49946466" weight="0.24770643" />
+      <window_info anchor="bottom" id="Terminal" order="1" sideWeight="0.49892932" visible="true" weight="0.24770643" />
       <window_info id="Capture Tool" order="1" />
       <window_info id="Designer" order="0" />
-      <window_info content_ui="combo" id="Project" order="4" visible="true" weight="0.22376874" />
+      <window_info active="true" content_ui="combo" id="Project" order="4" visible="true" weight="0.22376874" />
       <window_info anchor="right" id="Database" order="4" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="8" weight="0.25" />
@@ -337,16 +308,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/utils/ServerFileCheck.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3542">
-          <caret line="162" column="21" lean-forward="true" selection-start-line="162" selection-start-column="21" selection-end-line="162" selection-end-column="21" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/core/ServerHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="299">
@@ -354,13 +315,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/core/RdfsAgent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-686">
-          <caret line="44" column="38" selection-start-line="44" selection-start-column="38" selection-end-line="44" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -385,30 +339,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/utils/ServerFileThread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="20" column="6" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="6" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/utils/RdmaUtil.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="23">
           <caret line="13" column="27" lean-forward="true" selection-start-line="13" selection-start-column="27" selection-end-line="13" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/utils/AgentLogThread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -419,13 +353,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/utils/AgentLogUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
-          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/test/TestRdmaUtil.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="69">
@@ -433,6 +360,20 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/core/RdfsClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="326">
+          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/test/TestFileUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="19" column="40" lean-forward="true" selection-start-line="19" selection-start-column="40" selection-end-line="19" selection-end-column="40" />
         </state>
       </provider>
     </entry>
@@ -450,9 +391,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/utils/ServerFileCheck.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="241">
+          <caret line="157" column="22" selection-start-line="157" selection-start-column="22" selection-end-line="157" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/utils/ServerFileThread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="46">
+          <caret line="2" column="33" lean-forward="true" selection-start-line="2" selection-start-column="33" selection-end-line="2" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/core/AgentHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1525">
+        <state relative-caret-position="1058">
           <caret line="67" column="48" lean-forward="true" selection-start-line="67" selection-start-column="48" selection-end-line="67" selection-end-column="48" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -460,27 +418,48 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/test/TestFileUtil.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/utils/AgentLogUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="19" column="40" lean-forward="true" selection-start-line="19" selection-start-column="40" selection-end-line="19" selection-end-column="40" />
+        <state relative-caret-position="23">
+          <caret line="126" column="23" selection-start-line="126" selection-start-column="23" selection-end-line="126" selection-end-column="23" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/core/MarshallingCodeCFactory.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/utils/AgentLogThread.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="16" column="14" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
+        <state relative-caret-position="200">
+          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/core/RdfsClient.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/core/RdfsServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="349">
-          <caret line="35" column="70" selection-start-line="35" selection-start-column="70" selection-end-line="35" selection-end-column="70" />
+        <state relative-caret-position="464">
+          <caret line="62" column="41" selection-start-line="62" selection-start-column="41" selection-end-line="62" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/core/MarshallingCodeCFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-19">
+          <caret line="16" column="31" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/core/RdfsAgent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="69" column="63" lean-forward="true" selection-start-line="69" selection-start-column="63" selection-end-line="69" selection-end-column="63" />
+          <folding>
+            <element signature="e#818#819#0" expanded="true" />
+            <element signature="e#849#850#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
