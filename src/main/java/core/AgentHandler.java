@@ -13,6 +13,7 @@ import utils.AgentLogUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import utils.HashUtil;
 import utils.RdmaUtil;
 
 import java.util.*;
@@ -34,11 +35,11 @@ public class  AgentHandler extends ChannelInboundHandlerAdapter {
         String remoteAddress = incoming.remoteAddress().toString();
         remoteAddress = remoteAddress.substring(1, remoteAddress.indexOf(":"));
 //        System.out.println(remoteAddress);
-        int key = remoteAddress.hashCode() % 2;
-//        System.out.println(key);
+        HashUtil hashUtil = new HashUtil();
+        String targetStorageIp = hashUtil.getServer(remoteAddress);
 
         AgentToClientMsg agentToClientMsg = new AgentToClientMsg();
-        agentToClientMsg.setTargetStorage(Storage.get(key)); //根据客户端的ip地址选择了存放数据的服务器地址,返回给client
+        agentToClientMsg.setTargetStorage(targetStorageIp); //根据客户端的ip地址选择了存放数据的服务器地址,返回给client
 
         /*HashSet<String> dirTree = new HashSet<>();
         Collections.copy(dirTree, AgentLogUtil.getAgentDirTree());*/

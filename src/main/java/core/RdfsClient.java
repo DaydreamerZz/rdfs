@@ -32,11 +32,8 @@ public class RdfsClient {
     /*
      * Client upload文件时对应的远程目录.这个目录决定了是传输到内存文件系统,还是普通磁盘文件系统
      */
-<<<<<<< HEAD
-    public static String remoteRdmaDirectory = RdfsConstants.BUFF_PATH;
-=======
+
     public static String remoteRdmaDirectory = RdfsConstants.NVM_PATH;
->>>>>>> 9843dba7e0f5e316e7f9ddbd6e635b055ee93e74
 
     /*
      * Agent会维护一个系统中所有文件的目录树结构,在Client进行了某些操作后,Agent会把最新的目录树给Client.
@@ -135,15 +132,10 @@ public class RdfsClient {
                 if (result == COMMAND_UPLOAD_OK) { //到这里,文件已经被传输到远程了
 //                    channel.writeAndFlush(command + "\n");
                     ArrayList<String> fileNames = RdmaUtil.getFilePaths();
-                    /*for(String fileName : fileNames){
-//                        System.out.println("RdfsClient.connect " + fileName);
-                        channel.write(fileName);
-                    }
-                    channel.flush();*/
                     msg = new ClientToAgentMsg();
                     /*
-                    需要把这次Client传输的文件列表告诉Agent好让Agent更新目录树.
-                    这里只能新建立一个ArrayList对象,否则数据还没发送到Agent,fileNames.clear()方法会把数据清空,Agent收到的数据就是空的.fileNames在每次发送完都会清空.
+                    需要把这次Client传输的文件列表告诉Agent好让Agent更新目录树。
+                    这里只能新建立一个ArrayList对象,否则数据还没发送到Agent,fileNames.clear()方法会把数据清空,Agent收到的数据就是空的.fileNames在每次发送完都会清空。
                      */
                     ArrayList<String> sendFileNames = new ArrayList<>();
                     for (String tmp : fileNames) {
@@ -181,14 +173,9 @@ public class RdfsClient {
                     sb.append("get ");
                     sb.append(remotePath + " ");
                     sb.append(localPath);
-
                     msg = new ClientToAgentMsg();
                     msg.setCommandStr(sb.toString());
-<<<<<<< HEAD
-                    msg.setRemoteRdmaAddress("192.168.0.100");
-=======
-                    msg.setRemoteRdmaAddress("192.168.100.110");
->>>>>>> 9843dba7e0f5e316e7f9ddbd6e635b055ee93e74
+//                    msg.setRemoteRdmaAddress("192.168.100.110");
                     channel.writeAndFlush(msg);
 
                 } else if(result == COMMAND_HELP_OK){

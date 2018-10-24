@@ -5,7 +5,6 @@ package core;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import msg.AgentToServerMsg;
-import msg.ServerToAgentMsg;
 import utils.RdmaUtil;
 import utils.ServerFileCheck;
 
@@ -28,7 +27,6 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-
         if(msg instanceof  AgentToServerMsg) {
             AgentToServerMsg agentToServerMsg = (AgentToServerMsg) msg;
             String cmd = agentToServerMsg.getCmd();
