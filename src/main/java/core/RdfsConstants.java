@@ -7,10 +7,17 @@ package core;
  * @desc :
  */
 public class RdfsConstants {
+<<<<<<< HEAD
     public static final String BUFF_PATH = "/mnt/buff/";
     public static final String DISK_PATH = "/mnt/disk/";
 
     public static final int NVM_PATH_LENGTH = BUFF_PATH.length();
+=======
+    public static final String NVM_PATH = "/mnt/dram/";
+    public static final String NVM_BACKUP_PATH = "/mnt/backup/";
+
+    public static final int NVM_PATH_LENGTH = NVM_PATH.length();
+>>>>>>> 9843dba7e0f5e316e7f9ddbd6e635b055ee93e74
 
 
     public static final int COMMAND_NULL = 0;

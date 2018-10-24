@@ -5,7 +5,11 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 
 import static core.RdfsConstants.NVM_LIMIT_SIZE;
+<<<<<<< HEAD
 import static core.RdfsConstants.BUFF_PATH;
+=======
+import static core.RdfsConstants.NVM_PATH;
+>>>>>>> 9843dba7e0f5e316e7f9ddbd6e635b055ee93e74
 
 /**
  * @author : Bruce Zhao
@@ -16,7 +20,11 @@ import static core.RdfsConstants.BUFF_PATH;
 public class ServerFileThread implements Runnable {
     @Override
     public void run() {
+<<<<<<< HEAD
         File file = new File(BUFF_PATH);
+=======
+        File file = new File(NVM_PATH);
+>>>>>>> 9843dba7e0f5e316e7f9ddbd6e635b055ee93e74
         long previousSize = 0, currentSize;
         while (true) {
             currentSize = FileUtils.sizeOfDirectory(file);

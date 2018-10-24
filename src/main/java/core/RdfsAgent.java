@@ -36,12 +36,19 @@ public class RdfsAgent {
         /*
          * 记录下可用的存储服务器IP地址,这里是写死的.之后可以通过存储服务器与Agent的心跳消息确定可用的存储服务器IP地址.
          */
+<<<<<<< HEAD
         Storage.add("192.168.0.100");
         Storage.add("192.168.0.100");
 //        Storage.add("192.168.100.100");
 
         //根据文件,重建agent维护的目录树结构
         //public static final String RDMA_DIRTREE_LOG_FILE = "/opt/rdfs/rdma_dirtree_log_file"; 日志文件所在的位置
+=======
+        Storage.add("192.168.100.110");
+        Storage.add("192.168.100.110");
+
+        //根据文件,重建agent维护的目录树结构
+>>>>>>> 9843dba7e0f5e316e7f9ddbd6e635b055ee93e74
         AgentLogUtil.initAgentDirTree();
 
 
