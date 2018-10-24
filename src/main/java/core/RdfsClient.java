@@ -1,6 +1,6 @@
 package core;
 
-import msg.ClientToAgentFilesMsg;
+import msg.ClientToAgentMsg;
 import utils.CommandUtil;
 import utils.RdmaUtil;
 import io.netty.bootstrap.Bootstrap;
@@ -13,6 +13,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import static core.RdfsConstants.*;
 
 /**
  * @author : Bruce Zhao
@@ -30,7 +32,7 @@ public class RdfsClient {
     /*
      * Client upload文件时对应的远程目录.这个目录决定了是传输到内存文件系统,还是普通磁盘文件系统
      */
-    public static String remoteRdmaDirectory = "/mnt/nvm/";
+    public static String remoteRdmaDirectory = RdfsConstants.BUFF_PATH;
 
     /*
      * Agent会维护一个系统中所有文件的目录树结构,在Client进行了某些操作后,Agent会把最新的目录树给Client.
@@ -50,6 +52,8 @@ public class RdfsClient {
     }
 
     public static String getRemoteRdmaAddress() {
+        if(remoteRdmaAddress == null)
+            return RdfsConstants.DEFAULT_DEBUG_IP;
         return remoteRdmaAddress;
     }
 
@@ -73,8 +77,8 @@ public class RdfsClient {
 
 
     public static boolean isDebugRdmaRun() {
-        return DEBUG_RDMA_NOT_RUN;
-//        return DEBUG_RDMA_RUN;
+//        return DEBUG_RDMA_NOT_RUN;
+        return DEBUG_RDMA_RUN;
     }
 
     public static void main(String[] args) {
@@ -118,13 +122,13 @@ public class RdfsClient {
             2. 指令发送给server
 
              */
-            ClientToAgentFilesMsg msg;
+            ClientToAgentMsg msg;
             while (true) {
                 Thread.sleep(500); //没有任何意义,只是为了等待收到消息之后才显示$:
                 System.out.printf("$: ");
                 command = in.readLine();
                 int result = CommandUtil.parseStrCommand(command);
-                if (result == CommandUtil.COMMAND_UPLOAD_OK) { //到这里,文件已经被传输到远程了
+                if (result == COMMAND_UPLOAD_OK) { //到这里,文件已经被传输到远程了
 //                    channel.writeAndFlush(command + "\n");
                     ArrayList<String> fileNames = RdmaUtil.getFilePaths();
                     /*for(String fileName : fileNames){
@@ -132,14 +136,15 @@ public class RdfsClient {
                         channel.write(fileName);
                     }
                     channel.flush();*/
-                    msg = new ClientToAgentFilesMsg();
+                    msg = new ClientToAgentMsg();
                     /*
                     需要把这次Client传输的文件列表告诉Agent好让Agent更新目录树.
                     这里只能新建立一个ArrayList对象,否则数据还没发送到Agent,fileNames.clear()方法会把数据清空,Agent收到的数据就是空的.fileNames在每次发送完都会清空.
                      */
                     ArrayList<String> sendFileNames = new ArrayList<>();
                     for (String tmp : fileNames) {
-                        sendFileNames.add(tmp);
+                        String substring = tmp.substring(RdfsConstants.NVM_PATH_LENGTH);
+                        sendFileNames.add(substring);
                     }
 //                    Collections.copy(sendFileNames, fileNames);
                     msg.setCommandStr(command);
@@ -148,21 +153,48 @@ public class RdfsClient {
                     System.out.println("RdfsClient in connect() before send: " + msg);
                     channel.writeAndFlush(msg);
                     fileNames.clear();
-                } else if (result == CommandUtil.COMMAND_LIST_OK) {
-                    msg = new ClientToAgentFilesMsg();
+                } else if (result == COMMAND_LIST_OK) {
+                    msg = new ClientToAgentMsg();
                     msg.setCommandStr(command);
                     channel.writeAndFlush(msg);
-                } else if (result == CommandUtil.COMMAND_DELETT_OK) {
-                    msg = new ClientToAgentFilesMsg();
+                } else if (result == COMMAND_DELETT_OK) {
+                    msg = new ClientToAgentMsg();
                     msg.setCommandStr(command);
                     channel.writeAndFlush(msg);
-                } else if (result == CommandUtil.COMMAND_NULL) {
+                } else if(result == COMMAND_GET_OK){
+//                    System.out.println("");
+                    String tmp, remotePath, localPath;
+                    String[] split = command.split(" ");
+                    tmp = split[1];
+                    if("-f".equalsIgnoreCase(tmp)){ //有-f选项,无需判断目录是否存在,但是还是需要确定是否有权限创建目录
+                        remotePath = split[2];
+                        localPath = split[3];
+                    }else{
+                        remotePath = split[1];
+                        localPath = split[2];
+                    }
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("get ");
+                    sb.append(remotePath + " ");
+                    sb.append(localPath);
+
+                    msg = new ClientToAgentMsg();
+                    msg.setCommandStr(sb.toString());
+                    msg.setRemoteRdmaAddress("192.168.0.100");
+                    channel.writeAndFlush(msg);
+
+                } else if(result == COMMAND_HELP_OK){
+
+                } else if(result == COMMAND_EXIT_OK){
+                    System.out.println("RDFS exited!");
+                    break;
+                } else if (result == COMMAND_NULL) {
                     System.out.println("Command can not be empty");
-                } else if (result == CommandUtil.COMMAND_UNSUPPORTED) {
+                } else if (result == COMMAND_UNSUPPORTED) {
                     System.out.println("Command: " + command + " not supported");
-                } else if (result == CommandUtil.COMMAND_UNKNOWN) {
+                } else if (result == COMMAND_UNKNOWN) {
                     System.out.println("Command: " + command + " unknown");
-                } else if (result == CommandUtil.COMMAND_ILLEGAL) {
+                } else if (result == COMMAND_ILLEGAL) {
                     System.out.println("Command: " + command + " illegal");
                 }
 

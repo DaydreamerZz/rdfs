@@ -1,5 +1,6 @@
 package core;
 
+import utils.AgentLogThread;
 import utils.AgentLogUtil;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -20,16 +21,28 @@ import io.netty.handler.logging.LoggingHandler;
  */
 public class RdfsAgent {
 
+    public static boolean syncFlag = false;
+
+    public static boolean getSyncFlag() {
+        return syncFlag;
+    }
+
+    public static void setSyncFlag(boolean syncFlag) {
+        RdfsAgent.syncFlag = syncFlag;
+    }
+
     public static void main(String[] args) throws Exception {
         int port = 8080;
         /*
          * 记录下可用的存储服务器IP地址,这里是写死的.之后可以通过存储服务器与Agent的心跳消息确定可用的存储服务器IP地址.
          */
         Storage.add("192.168.0.100");
-        Storage.add("192.168.100.100");
+        Storage.add("192.168.0.100");
+//        Storage.add("192.168.100.100");
 
-        //重建agent维护的目录树结构
-        AgentLogUtil.rebuildAgentDirTree();
+        //根据文件,重建agent维护的目录树结构
+        //public static final String RDMA_DIRTREE_LOG_FILE = "/opt/rdfs/rdma_dirtree_log_file"; 日志文件所在的位置
+        AgentLogUtil.initAgentDirTree();
 
 
         new RdfsAgent().bind(port);
@@ -49,8 +62,15 @@ public class RdfsAgent {
 
             ChannelFuture future = bootstrap.bind(port).sync();
 
+            Thread thread = new Thread(new AgentLogThread());
+            thread.start();
+
             future.channel().closeFuture().sync();
+
         }finally {
+            //关闭的时候同步日志到文件
+            AgentLogUtil.logSync();
+
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }

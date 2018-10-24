@@ -1,6 +1,8 @@
 package utils;
 
 
+import core.RdfsConstants;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -18,50 +20,69 @@ public class FileUtil {
     public static final int IS_NOT_FILE_OR_DIR = 0;
     public static final int IS_FILE = 1;
     public static final int IS_DIR = 2;
-    public static final int _1MB = 1024 * 1024;
-
-
+    public static final int IS_EXIST = 3;
+    public static final int IS_CREATE_SUCCUESS = 4;
+    public static final int IS_CREATE_FAIL = 5;
 
 
     /*
     @param filePath
-    用来判断
+    用来判断指定路径的文件是否存在,
+    返回值0:不存在 1:文件 2:目录
      */
     public static int checkValidFilePath(String filePath) {
         File file = new File(filePath);
-
-        if(file.exists() && file.canRead()){
-            if(file.isFile())
+        if (file.exists() && file.canRead()) {
+            if (file.isFile())
                 return IS_FILE;
             else
                 return IS_DIR;
 
-        }else {
+        } else {
             return IS_NOT_FILE_OR_DIR;
         }
+    }
 
+
+    /*
+     * 判断用户指定的目录位置是否有访问权限
+     */
+    public static int checkFilePath(String localPath) {
+        File file = new File(localPath);
+        if(file.exists())
+            return IS_EXIST;
+        else{
+            if(file.mkdir()){ //如果目录创建成功
+                return IS_CREATE_SUCCUESS;
+            } else{
+                return IS_CREATE_FAIL;
+            }
+        }
     }
 
     /*
     @param fileOrDirPath 如果是文件路径,那么只会咋localFiles和remoteFiles添加相应的路径;如果是目录路径,会遍历目录下目录和文件,且目录本身也被添加到localDirs中.
     @return 返回所有文件的大小MB
+    traverseFolder("/home/lab2/files", "/mnt/nvm", ...)
+    traverseFolder("/mnt/nvm/f9", "/home/lab2/files/", ...)
      */
-    public static double traverseFolder(String fileOrDirPath, String remoteTargetDirPath, ArrayList<String> localDirs, ArrayList<String> localFiles, ArrayList<String> remoteDirs, ArrayList<String> remoteFiles) {
+    public static long traverseFolder(String localPath, String remoteTargetDirPath,
+                                        ArrayList<String> localDirs, ArrayList<String> localFiles,
+                                        ArrayList<String> remoteDirs, ArrayList<String> remoteFiles) {
 //        int fileNum = 0, folderNum = 0;
         long totalSize = 0;
 
-        File file = new File(fileOrDirPath);
-        if(file.isFile()){
+        File file = new File(localPath);
+        if (file.isFile()) {
             localFiles.add(file.getAbsolutePath());
 //            totalSize += file.getTotalSpace();
             totalSize += file.length();
-        }else {
-            if(fileOrDirPath.endsWith("/")){
-                localDirs.add(fileOrDirPath);
-//                fileOrDirPath = fileOrDirPath.substring(0, fileOrDirPath.length()-1);
-            }else{
-                localDirs.add(fileOrDirPath + "/");
+        } else {
+            if (localPath.charAt(localPath.length() - 1) != '/') {
+                localPath += '/';
             }
+//增加的,为了让目录自己也发送过去
+            localDirs.add(localPath);
 
             LinkedList<File> list = new LinkedList<File>();
             File[] files = file.listFiles();
@@ -93,30 +114,34 @@ public class FileUtil {
 
         }
 
-        if(!remoteTargetDirPath.endsWith("/")){
+        if (!remoteTargetDirPath.endsWith("/")) {
             remoteTargetDirPath += "/";
         }
 
-        if(localDirs.size() == 0){ //说明只有一个文件,处理好文件路径就可以了
-            String localPath = localFiles.get(0);
-            int splitIndex = localPath.lastIndexOf('/')+1;
+        if (file.isFile()) { //说明只有一个文件,处理好文件路径就可以了
+//            String localPath = localFiles.get(0);
+            int splitIndex = localPath.lastIndexOf('/') + 1;
             /*String substring = localPath.substring(localPath.lastIndexOf('/')+1);
             remoteFiles.add(remoteTargetDirPath + substring);*/
             remoteFiles.add(parsePath(localPath, remoteTargetDirPath, splitIndex));
-        }else{ //此时要对目录下所有文件和目录的地址进行转换
-            String localPath = localDirs.get(0);
-            int splitIndex = localPath.lastIndexOf('/')+1;
-            for(String localDir : localDirs){
+        } else { //此时要对目录下所有文件和目录的地址进行转换
+//            String localPath = localDirs.get(0);
+            localPath = localPath.substring(0, localPath.length()-1);
+            int splitIndex = localPath.lastIndexOf("/") + 1;
+//            int splitIndex = RdfsConstants.BUFF_PATH.length(); //todo
+//            int splitIndex =
+
+            for (String localDir : localDirs) {
                 remoteDirs.add(parsePath(localDir, remoteTargetDirPath, splitIndex));
             }
 
-            for(String localFile : localFiles){
+            for (String localFile : localFiles) {
                 remoteFiles.add(parsePath(localFile, remoteTargetDirPath, splitIndex));
             }
         }
 //        System.out.println("文件夹共有:" + folderNum + ",文件共有:" + fileNum);
-        return (totalSize*1.0) / _1MB;
-
+//        return (totalSize * 1.0) / _1MB;
+        return totalSize;
     }
 
     /*
@@ -129,7 +154,7 @@ public class FileUtil {
     splitIndex: 18
     目的是拼接得到/tmp/files/dir1/1
      */
-    public static String parsePath(String localPath, String remoteTargetDirPath, int splitIndex){
+    public static String parsePath(String localPath, String remoteTargetDirPath, int splitIndex) {
 
         String substring = localPath.substring(splitIndex);
         return remoteTargetDirPath + substring;
@@ -183,7 +208,7 @@ public class FileUtil {
      */
     public static void logFileSimple(ArrayList<String> filePaths) {
         File rdmaLogFile = new File("/tmp/rdma_log_file");
-        if(!rdmaLogFile.exists()){
+        if (!rdmaLogFile.exists()) {
             try {
                 rdmaLogFile.createNewFile();
             } catch (IOException e) {
@@ -200,7 +225,7 @@ public class FileUtil {
         try {
             LinkedHashSet<String> agentLogs = AgentLogUtil.getAgentDirTree();
             for (String filePath : filePaths) {
-                if(!agentLogs.contains(filePath))
+                if (!agentLogs.contains(filePath))
                     bwLog.write(filePath + "\n");
             }
             bwLog.flush();
@@ -214,9 +239,9 @@ public class FileUtil {
             }
         }
 
-        //到这里, 存放到server的文件路径信息都写入了Agent自己的rdma_log_file中,但是为了效率的问题,同时写入一个内存结构,方便查找
+        /*//到这里, 存放到server的文件路径信息都写入了Agent自己的rdma_log_file中,但是为了效率的问题,同时写入一个内存结构,方便查找
         AgentLogUtil agentLogUtil = new AgentLogUtil();
-        agentLogUtil.addAgentDirTree(filePaths);
+        agentLogUtil.addAgentDirTree(filePaths);*/
 
     }
 
@@ -224,13 +249,14 @@ public class FileUtil {
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
         Iterator<String> iterator = agentDirTreeDup.iterator();
-        String str;
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             String next = iterator.next();
-            if(next.endsWith("/")){
+            if (next.endsWith("/")) {
                 sb.append(next + "\n");
             }
         }
         return sb.toString();
     }
+
+
 }

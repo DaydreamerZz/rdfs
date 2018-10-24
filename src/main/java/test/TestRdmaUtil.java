@@ -1,7 +1,7 @@
 package test;
 
 
-import core.RdfsClient;
+import core.RdfsConstants;
 import utils.RdmaUtil;
 
 /**
@@ -13,11 +13,16 @@ import utils.RdmaUtil;
 public class TestRdmaUtil {
 
     public static void main(String[] args) {
-        RdmaUtil.tmpFileUpdate("/home/lab2/files/", RdfsClient.getRemoteRdmaDirectory());
+//        RdmaUtil.clientTmpFileUpdate("/home/lab2/files2/", RdfsConstants.BUFF_PATH);
 
-        RdmaUtil.uploadDir("/home/lab2/files/");
+//        RdmaUtil.uploadDir("/home/lab2/files2/");
 
-        //RdmaUtil.uploadFile("/home/lab2/files/1", "/tmp/files");
+
+        RdmaUtil.clientTmpFileUpdate("/home/lab2/a/files-10G-100", RdfsConstants.DISK_PATH);
+//        RdmaUtil.clientTmpFileUpdate("/home/lab2/a/files-10G-10", RdfsConstants.DISK_PATH);
+
+//        RdmaUtil.send("192.168.100.110", "/home/lab2/files/", "d1");
+
         return;
     }
 }

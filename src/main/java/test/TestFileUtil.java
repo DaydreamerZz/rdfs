@@ -15,12 +15,31 @@ public class TestFileUtil {
     public static void main(String[] args) {
         FileUtil fileUtil = new FileUtil();
 
-//        testTraverseFolder(fileUtil);
+        testTraverseFolder(fileUtil);
+
+        testForTestWriteLocal(fileUtil);
 
 //        testBuildLocalFileTree(fileUtil);
 
-        testLogFileSimple(fileUtil);
+//        testLogFileSimple(fileUtil);
+
+
+        /*int res = FileUtil.checkFilePath("/mnt/nvm/dir1");
+        System.out.println(res);*/
         return;
+    }
+
+    private static void testForTestWriteLocal(FileUtil fileUtil) {
+        ArrayList<String> localDirs = new ArrayList<>();
+        ArrayList<String> localFiles = new ArrayList<>();
+
+        ArrayList<String> remoteDirs = new ArrayList<>();
+        ArrayList<String> remoteFiles = new ArrayList<>();
+
+//        fileUtil.traverseFolder("/home/lab2/files/", "/mnt/nvm", localDirs, localFiles, remoteDirs, remoteFiles);
+        fileUtil.traverseFolder("/home/lab2/a/files-10G-10", "/mnt/disk", localDirs, localFiles, remoteDirs, remoteFiles);
+
+
     }
 
     public static void testTraverseFolder(FileUtil fileUtil){
@@ -30,7 +49,8 @@ public class TestFileUtil {
         ArrayList<String> remoteDirs = new ArrayList<>();
         ArrayList<String> remoteFiles = new ArrayList<>();
 
-        fileUtil.traverseFolder("/home/lab2/files/", "/mnt/nvm", localDirs, localFiles, remoteDirs, remoteFiles);
+//        fileUtil.traverseFolder("/home/lab2/files/", "/mnt/nvm", localDirs, localFiles, remoteDirs, remoteFiles);
+        fileUtil.traverseFolder("/home/lab2/a/files-10G-10", "/mnt/disk", localDirs, localFiles, remoteDirs, remoteFiles);
 //        fileUtil.traverseFolder("/home/lab2/files/1", "/home/lab1/", localDirs, localFiles, remoteDirs, remoteFiles);
         System.out.println(localDirs);
         System.out.println(localFiles);
@@ -39,7 +59,7 @@ public class TestFileUtil {
         System.out.println(remoteFiles);
     }
 
-    public static void testBuildLocalFileTree(FileUtil fileUtil){
+    /*public static void testBuildLocalFileTree(FileUtil fileUtil){
         ArrayList<String> filePaths = new ArrayList<>();
 
         filePaths.add("/mnt/nvm/");filePaths.add("/mnt/nvm/dir1/");
@@ -63,5 +83,5 @@ public class TestFileUtil {
         filePaths.add("/mnt/nvm/dir1/a");filePaths.add("/mnt/nvm/dir1/dir11/file2");
 
         fileUtil.logFileSimple(filePaths);
-    }
+    }*/
 }
