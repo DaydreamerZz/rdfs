@@ -128,11 +128,7 @@ public class FileUtil {
 //            String localPath = localDirs.get(0);
             localPath = localPath.substring(0, localPath.length()-1);
             int splitIndex = localPath.lastIndexOf("/") + 1;
-<<<<<<< HEAD
 //            int splitIndex = RdfsConstants.BUFF_PATH.length(); //todo
-=======
-//            int splitIndex = RdfsConstants.NVM_PATH.length(); //todo
->>>>>>> 9843dba7e0f5e316e7f9ddbd6e635b055ee93e74
 //            int splitIndex =
 
             for (String localDir : localDirs) {

@@ -1,24 +1,14 @@
 package utils;
 
-<<<<<<< HEAD
-=======
-import core.RdfsConstants;
->>>>>>> 9843dba7e0f5e316e7f9ddbd6e635b055ee93e74
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
-<<<<<<< HEAD
 import static core.RdfsConstants.DISK_PATH;
 import static core.RdfsConstants.NVM_LIMIT_SIZE;
 import static core.RdfsConstants.BUFF_PATH;
-=======
-import static core.RdfsConstants.NVM_BACKUP_PATH;
-import static core.RdfsConstants.NVM_LIMIT_SIZE;
-import static core.RdfsConstants.NVM_PATH;
->>>>>>> 9843dba7e0f5e316e7f9ddbd6e635b055ee93e74
 
 
 /**
@@ -72,11 +62,7 @@ public class ServerFileCheck {
             nvmFilesList.clear();
         }
 //        int fileNum = 0, folderNum = 0;
-<<<<<<< HEAD
         File file = new File(BUFF_PATH);
-=======
-        File file = new File(NVM_PATH);
->>>>>>> 9843dba7e0f5e316e7f9ddbd6e635b055ee93e74
         if(file.isFile()){
             totalSize += file.length();
             nvmFilesList.add(file.getAbsolutePath());
@@ -116,11 +102,7 @@ public class ServerFileCheck {
      * 当检查到NVM中文件总大小超过了设定值,写入部分文件到磁盘中去
      */
     public static void nvmWriteToDisk() {
-<<<<<<< HEAD
         File file = new File(BUFF_PATH);
-=======
-        File file = new File(NVM_PATH);
->>>>>>> 9843dba7e0f5e316e7f9ddbd6e635b055ee93e74
         String srcFileName, targetFileName;
         File srcFile, targetFile;
         while(true){
@@ -130,11 +112,7 @@ public class ServerFileCheck {
                     nvmFilesList.removeFirst();
                     srcFile = new File(srcFileName);
                     String substring = srcFileName.substring(srcFileName.lastIndexOf("/") + 1);
-<<<<<<< HEAD
                     targetFileName = DISK_PATH + substring;
-=======
-                    targetFileName = NVM_BACKUP_PATH + substring;
->>>>>>> 9843dba7e0f5e316e7f9ddbd6e635b055ee93e74
 
                     targetFile = new File(targetFileName);
                     if(targetFile.exists()){ //如果备份文件存在了,删除之
@@ -164,19 +142,11 @@ public class ServerFileCheck {
      */
     public static void remove(String path) {
         System.out.println("ServerFileCheck.remove(): " + path);
-<<<<<<< HEAD
         String realPath = BUFF_PATH + path;
         File file;
         file = new File(realPath);
         if(!file.exists()){ //说明文件被移动了磁盘
             realPath = DISK_PATH + path;
-=======
-        String realPath = NVM_PATH + path;
-        File file;
-        file = new File(realPath);
-        if(!file.exists()){ //说明文件被移动了磁盘
-            realPath = NVM_BACKUP_PATH + path;
->>>>>>> 9843dba7e0f5e316e7f9ddbd6e635b055ee93e74
             file = new File(realPath);
             if(!file.exists()){
                 return;

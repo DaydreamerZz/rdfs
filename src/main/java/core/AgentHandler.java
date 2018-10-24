@@ -61,7 +61,7 @@ public class  AgentHandler extends ChannelInboundHandlerAdapter {
         if (msg instanceof ServerToAgentMsg) { //Agent收到Server的消息,返回Server消息
             AgentToServerMsg agentToServerMsg = new AgentToServerMsg();
             agentToServerMsg.setClientIp("localhost");
-            agentToServerMsg.setClientDir(RdfsConstants.NVM_PATH);
+            agentToServerMsg.setClientDir(RdfsConstants.BUFF_PATH);
             agentToServerMsg.setCmd("null");
             ctx.writeAndFlush(agentToServerMsg);
         }else{

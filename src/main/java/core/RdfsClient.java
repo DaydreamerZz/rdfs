@@ -33,7 +33,7 @@ public class RdfsClient {
      * Client upload文件时对应的远程目录.这个目录决定了是传输到内存文件系统,还是普通磁盘文件系统
      */
 
-    public static String remoteRdmaDirectory = RdfsConstants.NVM_PATH;
+    public static String remoteRdmaDirectory = RdfsConstants.BUFF_PATH;
 
     /*
      * Agent会维护一个系统中所有文件的目录树结构,在Client进行了某些操作后,Agent会把最新的目录树给Client.

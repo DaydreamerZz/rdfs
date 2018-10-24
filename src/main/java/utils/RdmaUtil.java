@@ -127,27 +127,16 @@ public class RdmaUtil {
                     bwLocal.write(localFiles.get(i) + "\n");
                     filePaths.add(remoteFiles.get(i));
                 }
-<<<<<<< HEAD
 
-=======
-                bwLocal.flush();
-                bwRemote.flush();
->>>>>>> 9843dba7e0f5e316e7f9ddbd6e635b055ee93e74
             } else { //只发送一个文件
                 bwLocal.write(localFiles.get(0) + "\n");
                 bwRemote.write(remoteFiles.get(0) + "\n");
                 filePaths.add(remoteFiles.get(0));
-<<<<<<< HEAD
             }
             bwLocal.write("##");
             bwRemote.write("##");
             bwLocal.flush();
             bwRemote.flush();
-=======
-                bwLocal.flush();
-                bwRemote.flush();
-            }
->>>>>>> 9843dba7e0f5e316e7f9ddbd6e635b055ee93e74
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -276,17 +265,10 @@ public class RdmaUtil {
 
         String realPath;
         File file;
-<<<<<<< HEAD
         realPath = RdfsConstants.BUFF_PATH + path;
         file = new File(realPath);
         if(!file.exists()){
             realPath = RdfsConstants.DISK_PATH + path;
-=======
-        realPath = RdfsConstants.NVM_PATH + path;
-        file = new File(realPath);
-        if(!file.exists()){
-            realPath = RdfsConstants.NVM_BACKUP_PATH + path;
->>>>>>> 9843dba7e0f5e316e7f9ddbd6e635b055ee93e74
             file = new File(realPath);
             if(!file.exists()) {
                 System.out.println("RdmaUtil.send() 文件或者目录不存在!");

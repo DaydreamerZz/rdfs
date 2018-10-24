@@ -45,14 +45,10 @@ public class CommandUtil {
                     }else if(fileCheckResult == FileUtil.IS_DIR){ //检查文件路径是否存在,并且可读,确保目录存在
                         System.out.println("CommandUtil.parseStrCommand(): 开始传输目录" + split[1]);
                         RdmaUtil.clientTmpFileUpdate(split[1], RdfsClient.getRemoteRdmaDirectory()); //使用RDMA传输,需要读取/tmp目录下临时文件,所以每次先更新临时文件
-<<<<<<< HEAD
 
                         //todo 拿到远程ip这里有问题
 //                        RdmaUtil.uploadDir(split[1], RdfsClient.getRemoteRdmaAddress());
                         RdmaUtil.uploadDir(split[1], "192.168.0.100");
-=======
-                        RdmaUtil.uploadDir(split[1], RdfsClient.getRemoteRdmaAddress());
->>>>>>> 9843dba7e0f5e316e7f9ddbd6e635b055ee93e74
 
                         return COMMAND_UPLOAD_OK;
                     }else {

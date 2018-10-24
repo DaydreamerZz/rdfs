@@ -16,11 +16,8 @@ public class TestFileUtil {
         FileUtil fileUtil = new FileUtil();
 
         testTraverseFolder(fileUtil);
-<<<<<<< HEAD
 
         testForTestWriteLocal(fileUtil);
-=======
->>>>>>> 9843dba7e0f5e316e7f9ddbd6e635b055ee93e74
 
 //        testBuildLocalFileTree(fileUtil);
 
@@ -53,11 +50,7 @@ public class TestFileUtil {
         ArrayList<String> remoteFiles = new ArrayList<>();
 
 //        fileUtil.traverseFolder("/home/lab2/files/", "/mnt/nvm", localDirs, localFiles, remoteDirs, remoteFiles);
-<<<<<<< HEAD
         fileUtil.traverseFolder("/home/lab2/a/files-10G-10", "/mnt/disk", localDirs, localFiles, remoteDirs, remoteFiles);
-=======
-        fileUtil.traverseFolder("/mnt/nvm/", "/home/lab2/files/", localDirs, localFiles, remoteDirs, remoteFiles);
->>>>>>> 9843dba7e0f5e316e7f9ddbd6e635b055ee93e74
 //        fileUtil.traverseFolder("/home/lab2/files/1", "/home/lab1/", localDirs, localFiles, remoteDirs, remoteFiles);
         System.out.println(localDirs);
         System.out.println(localFiles);
